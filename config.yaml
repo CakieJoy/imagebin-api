@@ -1,0 +1,11 @@
+settings:
+  API_KEY: "my_very_very_secret_api_key" # ! Change this your strong API Key
+  DOMAIN: "localhost:8000" # * your domain name or ip address (yeah ip addrsses work too but name is domain :3)
+  URL_PREFIX: "/images" # * Example if you want to change this just do it
+  UPLOAD_FOLDER: "images" # * Folder name for uploaded images.
+
+supported_extensions:
+  - ".jpg"
+  - ".jpeg"
+  - ".png"
+  - ".gif"

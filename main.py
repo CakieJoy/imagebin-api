@@ -31,7 +31,7 @@ app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory=config.UPLOAD_FOLDER), 
 
 @app.post("/v1/upload")
 def upload(image: UploadFile = File(...), security: str = Depends(API_key_check)):
-    return upload_image(file)
+    return upload_image(image)
 
 
 @app.post("/v1/delete")

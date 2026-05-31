@@ -34,7 +34,7 @@ The entire operational workflow of the API is managed via the `config.yaml` file
 Used to upload a new file to the system.
 
 * **HTTP Method:** `POST`
-* **Endpoint:** `/upload`
+* **Endpoint:** `/v1/upload`
 * **Headers:**
     * `x-api-key`: `<api_key>`
 * **Request Body (multipart/form-data):**
@@ -56,7 +56,7 @@ Permanently deletes a file hosted on the server from both the system and the dis
 
 - **HTTP Method:** `POST`
     
-- **Endpoint:** `/delete`
+- **Endpoint:** `/v1/delete`
     
 - **Headers:**
     
@@ -80,7 +80,7 @@ Reloads the changes made to `config.yaml` into the system without shutting down 
 
 - **HTTP Method:** `POST`
     
-- **Endpoint:** `/reload-config`
+- **Endpoint:** `/v1/reload-config`
     
 - **Headers:**
     

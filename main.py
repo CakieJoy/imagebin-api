@@ -8,8 +8,8 @@ from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, Security
 from fastapi.security.api_key import APIKeyHeader
 import os
 import app_config as config
-
-
+from upload import upload_image
+from delete import delete_image
 
 app = FastAPI()
 
@@ -31,11 +31,9 @@ app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory=config.UPLOAD_FOLDER), 
 
 @app.post("/v1/upload")
 def upload(file: UploadFile = File(...), security: str = Depends(API_key_check)):
-    from upload import upload_image
     return upload_image(file)
 
 
 @app.post("/v1/delete")
 def delete(image_id: str, security: str = Depends(API_key_check)):
-    from upload import upload_image
     return delete_image(image_id, security)

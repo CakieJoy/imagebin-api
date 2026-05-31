@@ -30,7 +30,7 @@ if not os.path.exists(config.UPLOAD_FOLDER):
 app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory=config.UPLOAD_FOLDER), name="images")
 
 @app.post("/v1/upload")
-def upload(file: UploadFile = File(...), security: str = Depends(API_key_check)):
+def upload(image: UploadFile = File(...), security: str = Depends(API_key_check)):
     return upload_image(file)
 
 

@@ -22,12 +22,12 @@ def reload_config_endpoint(security: str = Depends(API_key_check)):
 
 
 
-if not os.path.exists(config.UPLOAD_FOLDER):
-    os.makedirs(config.UPLOAD_FOLDER)
+if not os.path.exists("/app/data/" + config.UPLOAD_FOLDER):
+    os.makedirs("/app/data/" + config.UPLOAD_FOLDER)
 # * ^ this code checks if the folder exists and if doesnt create the folder
 
 
-app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory=config.UPLOAD_FOLDER), name="images")
+app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.UPLOAD_FOLDER), name="images")
 
 @app.post("/v1/upload")
 def upload(image: UploadFile = File(...), security: str = Depends(API_key_check)):

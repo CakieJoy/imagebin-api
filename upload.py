@@ -16,7 +16,7 @@ def upload_image(image: UploadFile = File(...), security: str = Depends(API_key_
 
         image_id = f"{uuid.uuid4()}{image_extension}"
 
-        image_path = os.path.join(config.UPLOAD_FOLDER, image_id)
+        image_path = os.path.join("/app/data/" + config.UPLOAD_FOLDER, image_id)
 
         with open(image_path, "wb") as buffer:
             buffer.write(image.file.read())

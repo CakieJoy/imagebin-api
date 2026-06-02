@@ -1,14 +1,14 @@
-#!/usr/bin/bash
-
 #!/bin/sh
 
-# Geçici klasördeki güncel kaynak kodları,
-# dışarıdan bağlanan /app klasörünün içine kopyala (mevcut config ve uploadlara dokunmaz)
-echo "Source code copying on volume"
-cp -r /app_tmp/. /app/
+echo "[INFO] Checking config file existing"
+if [ ! -f "/data/config.yaml" ]; then
+  echo "[WARN] Config file not found, copying default config..."
+  cp /app/config.template.yaml /app/data/config.yaml
+else
+  echo "[INFO] Config file found, skipping copy."
+fi
 
-# Sunucuyu başlat
-echo "Starting API"
+echo "[INFO] Starting API"
 exec uvicorn main:app \
   --host 0.0.0.0 \
   --port 8000 \

@@ -10,7 +10,7 @@ SUPPORTED_EXTENSIONS = None
 def reload_config():
     global UPLOAD_FOLDER, DOMAIN, API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS
     
-    with open("config.yaml", "r") as config_file:
+    with open("/app/data/config.yaml", "r") as config_file:
         data = yaml.safe_load(config_file)
 
     UPLOAD_FOLDER = data["settings"]["UPLOAD_FOLDER"]

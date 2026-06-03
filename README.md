@@ -10,7 +10,7 @@ It is mandatory to include authentication information in all requests sent to th
 
 * **Auth Method:** API Key
 * **Header Key:** `x-api-key`
-* **Header Value:** `<config.yaml dosyasında belirlenen API Key>`
+* **Header Value:** `<API_Key in config.yaml>`
 
 ---
 
@@ -25,7 +25,7 @@ The entire operational workflow of the API is managed via the `config.yaml` file
 | `URL_PREFIX`         | String       | The URL prefix for hosted files. (e.g., `images`).<br>**Note:** This parameter cannot be changed dynamically via config reload (`/reload-config`); the service must be restarted. |
 | `UPLOAD_FOLDER`         | String       | The local folder name where files will be stored unencrypted and physically on the server. File names are kept exactly identical to the `image_id` in the system.                 |
 | `ALLOWED_EXTENSIONS` | List (Array) | The list of permitted file extensions (e.g., `[.png, .jpg, .pdf]`). Any file with an extension outside of this list will be rejected and not uploaded.                            |
-| `DISABLE_DOCS` | Boolean | Dısables /docs and /redoc                        |
+| `DISABLE_DOCS` | Boolean | Disables /docs and /redoc (Config reload not supported)                        |
 
 ---
 

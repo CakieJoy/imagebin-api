@@ -20,11 +20,12 @@ The entire operational workflow of the API is managed via the `config.yaml` file
 
 | Parameter            | Data Type    | Description                                                                                                                                                                       |
 | :------------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `api_key`            | String       | The secret key required to access the API.                                                                                                                                        |
-| `domain`             | String       | The domain name or IP address where the server is hosted.                                                                                                                         |
-| `url_prefix`         | String       | The URL prefix for hosted files. (e.g., `images`).<br>**Note:** This parameter cannot be changed dynamically via config reload (`/reload-config`); the service must be restarted. |
-| `upload_dir`         | String       | The local folder name where files will be stored unencrypted and physically on the server. File names are kept exactly identical to the `image_id` in the system.                 |
-| `allowed_extensions` | List (Array) | The list of permitted file extensions (e.g., `[.png, .jpg, .pdf]`). Any file with an extension outside of this list will be rejected and not uploaded.                            |
+| `API_KEY`            | String       | The secret key required to access the API.                                                                                                                                        |
+| `DOMAIN`             | String       | The domain name or IP address where the server is hosted.                                                                                                                         |
+| `URL_PREFIX`         | String       | The URL prefix for hosted files. (e.g., `images`).<br>**Note:** This parameter cannot be changed dynamically via config reload (`/reload-config`); the service must be restarted. |
+| `UPLOAD_FOLDER`         | String       | The local folder name where files will be stored unencrypted and physically on the server. File names are kept exactly identical to the `image_id` in the system.                 |
+| `ALLOWED_EXTENSIONS` | List (Array) | The list of permitted file extensions (e.g., `[.png, .jpg, .pdf]`). Any file with an extension outside of this list will be rejected and not uploaded.                            |
+| `DISABLE_DOCS` | Boolean | Dısables /docs and /redoc                        |
 
 ---
 

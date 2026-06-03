@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "[INFO] Checking config file existing"
-if [ ! -f "/data/config.yaml" ]; then
+if [ ! -f "/app/data/config.yaml" ]; then
   echo "[WARN] Config file not found, copying default config..."
   cp /app/config.template.yaml /app/data/config.yaml
 else

@@ -3,7 +3,7 @@ settings:
   DOMAIN: "localhost:8000" # * your domain name or ip address (yeah ip addrsses work too but name is domain :3)
   URL_PREFIX: "/images" # * Example if you want to change this just do it
   UPLOAD_FOLDER: "images" # * Folder name for uploaded images.
-
+  DISABLE_DOCS: True # * If you want to disable /docs and /redoc set this to True (config reload is not supported)
 supported_extensions:
   - ".jpg"
   - ".jpeg"

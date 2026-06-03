@@ -11,7 +11,15 @@ import app_config as config
 from upload import upload_image
 from delete import delete_image
 
-app = FastAPI()
+fastapi_kwargs = {}
+
+
+if config.DISABLE_DOCS:  
+    fastapi_kwargs.update({"docs_url": None, "redoc_url": None})
+else:
+    fastapi_kwargs.update({"docs_url": "/docs", "redoc_url": "/redoc"})
+
+app = FastAPI(**fastapi_kwargs)
 
 
 @app.post("/v1/reload_config")

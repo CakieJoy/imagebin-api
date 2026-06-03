@@ -1,12 +1,12 @@
 # config.py
 import yaml
 
-UPLOAD_FOLDER = None
-DOMAIN = None
-API_KEY = None
-IMAGE_URL_PREFIX = None
-SUPPORTED_EXTENSIONS = None
-DISABLE_DOCS = None
+UPLOAD_FOLDER = "images"
+DOMAIN = "localhost:8000"
+API_KEY = "my_very_very_secret_api_key"
+IMAGE_URL_PREFIX = "/images"
+SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
+DISABLE_DOCS = True
 
 def reload_config():
     global UPLOAD_FOLDER, DOMAIN, API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS

@@ -55,7 +55,7 @@ Used to upload a new file to the system.
 
 Permanently deletes a file hosted on the server from both the system and the disk.
 
-- **HTTP Method:** `POST`
+- **HTTP Method:** `DELETE`
     
 - **Endpoint:** `/v1/delete`
     
@@ -106,7 +106,7 @@ Reloads the changes made to `config.yaml` into the system without shutting down 
 The project is available on Docker Hub. You can pull the image by typing:
 
 ```bash
-docker pull cakiejoy/imagebin-api:0306.2026.3
+docker pull cakiejoy/imagebin-api:latest
 ```
 
 and run the Docker Compose file located in the [github.com/CakieJoy/compose-stack](https://github.com/CakieJoy/compose-stack) repository.

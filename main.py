@@ -42,6 +42,6 @@ def upload(image: UploadFile = File(...), security: str = Depends(API_key_check)
     return upload_image(image)
 
 
-@app.post("/v1/delete")
+@app.delete("/v1/delete")
 def delete(image_id: str, security: str = Depends(API_key_check)):
     return delete_image(image_id, security)

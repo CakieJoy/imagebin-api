@@ -11,6 +11,8 @@ COPY . .
 
 RUN chmod +x ./entrypoint.sh
 
+RUN chmod +x ./entrypoint_test.sh
+
 RUN chmod -R 777 /app ./data
 
 EXPOSE 8000

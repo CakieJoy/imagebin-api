@@ -6,10 +6,8 @@ from delete import delete_image
 from fastapi import FastAPI
 from fastapi import FastAPI, UploadFile, File
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, Security
-from fastapi.security.api_key import APIKeyHeader
+from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
 import os
 import app_config as config
 from upload import upload_image

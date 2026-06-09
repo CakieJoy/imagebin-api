@@ -1,8 +1,6 @@
 import os
 import uuid
-from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, Security
-from fastapi.security.api_key import APIKeyHeader
-from fastapi.staticfiles import StaticFiles
+from fastapi import UploadFile, File, Depends, HTTPException
 
 import app_config as config
 from auth import API_key_check

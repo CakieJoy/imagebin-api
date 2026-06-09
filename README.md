@@ -16,7 +16,7 @@ It is mandatory to include authentication information in all requests sent to th
 
 ## 2. Configuration (config.yaml)
 
-The entire operational workflow of the API is managed via the `config.yaml` file. The majority of the settings can be updated dynamically. Below are the parameters and their descripti`ons located in the `config.yaml` file:
+The entire operational workflow of the API is managed via the `config.yaml` file. The majority of the settings can be updated dynamically. Below are the parameters and their descriptions located in the `config.yaml` file:
 
 | Parameter            | Data Type    | Description                                                                                                                                                                       |
 | :------------------- | :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -4,7 +4,7 @@ Even though this API was originally designed just for photo hosting, it allows y
 
 ---
 
-## 1.. General Rules & Authentication
+## 1. General Rules & Authentication
 
 It is mandatory to include authentication information in all requests sent to the API. Authentication is performed via the HTTP Header using the `x-api-key` key.
 
@@ -31,7 +31,7 @@ The entire operational workflow of the API is managed via the `config.yaml` file
 
 ## 3. API Endpoints
 
-### 3.1. Upload Files
+### 1. Upload Files
 Used to upload a new file to the system.
 
 * **HTTP Method:** `POST`
@@ -109,4 +109,4 @@ The project is available on [Docker Hub](https://hub.docker.com/r/cakiejoy/image
 docker pull cakiejoy/imagebin-api:latest
 ```
 
-and run the Docker Compose file located in the [github.com/CakieJoy/compose-stack](https://github.com/CakieJoy/compose-stack) repository.
+and run the Docker Compose file located in the [GitHub/CakieJoy/compose-stack](https://github.com/CakieJoy/compose-stack) repository.

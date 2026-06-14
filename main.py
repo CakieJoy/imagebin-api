@@ -1,6 +1,4 @@
 from logging import config
-
-
 from auth import API_key_check
 from delete import delete_image
 from fastapi import FastAPI
@@ -10,6 +8,7 @@ from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
 import os
 import app_config as config
+from get_images import get_image
 from upload import upload_image
 from delete import delete_image
 
@@ -36,15 +35,20 @@ if not os.path.exists("/app/data/" + config.UPLOAD_FOLDER):
 
 app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.UPLOAD_FOLDER), name="images")
 
+# * Upload Image endpoint
 @app.post("/v1/upload")
 def upload(image: UploadFile = File(...), security: str = Depends(API_key_check)):
     return upload_image(image)
 
-
+# * Delete Image endpoint
 @app.delete("/v1/delete")
 def delete(image_id: str, security: str = Depends(API_key_check)):
     return delete_image(image_id, security)
 
+# * Get Images endpoint
+@app.get("/v1/get-images")
+def get_images(security: str = Depends(API_key_check)):
+    return get_image(security)
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

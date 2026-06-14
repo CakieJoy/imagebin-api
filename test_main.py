@@ -30,3 +30,7 @@ def test_reload_config():
     response = client.post("/v1/reload_config", headers=header)
     assert response.status_code == 200
 
+def test_get_images():
+    header = {"x-api-key": "my_very_very_secret_api_key"}
+    response = client.get("/v1/get-images", headers=header)
+    assert response.status_code == 200

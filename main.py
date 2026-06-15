@@ -8,6 +8,7 @@ from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
 import os
 import app_config as config
+from experimantal_get_images import experimantal_get_image
 from get_images import get_image
 from upload import upload_image
 from delete import delete_image
@@ -49,6 +50,12 @@ def delete(image_id: str, security: str = Depends(API_key_check)):
 @app.get("/v1/get-images")
 def get_images(security: str = Depends(API_key_check)):
     return get_image(security)
+
+# * Get Images endpoint (Experimental)
+@app.get("/experimental/get-images")
+def get_images(extension = str,security: str = Depends(API_key_check)):
+    return experimantal_get_image(extension, security)
+# * I think this endpoint will remain experimental for a while.
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

@@ -1,7 +1,9 @@
 from logging import config
+
+from pygments.lexer import default
 from auth import API_key_check
 from delete import delete_image
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi import FastAPI, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, UploadFile, File, Depends
@@ -53,7 +55,7 @@ def get_images(security: str = Depends(API_key_check)):
 
 # * Get Images endpoint (Experimental)
 @app.get("/experimental/get-images")
-def get_images(extension = str,security: str = Depends(API_key_check)):
+def get_images(extension: str = Query(default=""), security: str = Depends(API_key_check)):
     return experimantal_get_image(extension, security)
 # * I think this endpoint will remain experimental for a while.
 

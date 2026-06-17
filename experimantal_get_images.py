@@ -10,6 +10,6 @@ def experimantal_get_image(extension: str, security: str = Depends(API_key_check
         all_images = os.listdir(images_path)
         return {"status": "200", "images-list": all_images}
     else:    
-        filtered_images = glob.glob(os.path.join(images_path, f"*.{extension}"))
+        filtered_images = glob.glob(os.path.join(f"*.{extension}"), root_dir=images_path,)
         return {"status": "200", "images-list": filtered_images}
     

@@ -36,5 +36,5 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/my-app:${{ github.event.inputs.version }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ github.event.inputs.version }}

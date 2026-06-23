@@ -8,6 +8,15 @@ else
   echo "[INFO] Config file found, skipping copy."
 fi
 
+echo "[INFO] Checking 404.html file existing"
+if [ ! -f "/app/data/templates/404.html" ]; then
+  echo "[WARN] 404.html file not found, copying default..."
+  mkdir -p /app/data/templates
+  cp /app/404.template.html /app/data/templates/404.html
+else
+  echo "[INFO] 404.html file found, skipping copy."
+fi
+
 echo "[INFO] Starting API"
 exec uvicorn main:app \
   --host 0.0.0.0 \

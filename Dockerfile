@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
-# * create project user
-RUN adduser --disabled-password --gecos "" imagebinapi-user
+# * create project user (comment lined because not working correctly)
+#RUN adduser --disabled-password --gecos "" imagebinapi-user
 
 WORKDIR /app
 
@@ -22,8 +22,8 @@ RUN chmod -R 777 /app ./data
 # * API Port
 EXPOSE 8000
 
-# * Switch to project user
-USER imagebinapi-user
+# * Switch to project user (comment lined because not working correctly)
+#USER imagebinapi-user
 
 # * Entrypoint file
 ENTRYPOINT ["./entrypoint.sh"]

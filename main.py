@@ -1,5 +1,6 @@
 from logging import config
 
+from fastapi.responses import JSONResponse
 from pygments.lexer import default
 from auth import API_key_check
 from delete import delete_image
@@ -50,20 +51,27 @@ def delete(image_id: str, security: str = Depends(API_key_check)):
 
 # * Get Images endpoint
 @app.get("/v1/get-images")
-def get_images(security: str = Depends(API_key_check)):
-    return get_image(security)
+def get_images(extension: str = Query(default = ""), security: str = Depends(API_key_check)):
+    return get_image(security, extension)
 
 # * Get Images endpoint (Experimental)
 @app.get("/experimental/get-images")
 def get_images(extension: str = Query(default=""), security: str = Depends(API_key_check)):
     return experimantal_get_image(extension, security)
-# * I think this endpoint will remain experimental for a while.
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):
-    return templates.TemplateResponse(
-     request=request,
-     name="404.html",
-     context={"request": request},
-     status_code=404
-    )
+    accept_header = request.headers.get("accept", "")
+    if "text/html" in accept_header:
+        return templates.TemplateResponse(
+            request=request,
+            name="404.html",
+            context={"request": request},
+            status_code=404
+        )
+    else:
+        return JSONResponse(
+            status_code=404,
+            content={"detail": "Not Found anything"}
+        )
+    

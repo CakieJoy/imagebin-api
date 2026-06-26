@@ -1,11 +1,11 @@
 from logging import config
-
 from fastapi.responses import JSONResponse
 from pygments.lexer import default
+from slowapi import Limiter, _rate_limit_exceeded_handler
 from auth import API_key_check
 from delete import delete_image
 from fastapi import FastAPI, Query
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
@@ -15,6 +15,11 @@ from experimantal_get_images import experimantal_get_image
 from get_images import get_image
 from upload import upload_image
 from delete import delete_image
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+
+limiter = Limiter(key_func=get_remote_address)
 
 fastapi_kwargs = {}
 templates = Jinja2Templates(directory="/app/data/templates")
@@ -27,8 +32,12 @@ else:
 app = FastAPI(**fastapi_kwargs)
 
 
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 @app.post("/v1/reload_config")
-def reload_config_endpoint(security: str = Depends(API_key_check)):
+@limiter.limit("5/minute")
+async def reload_config_endpoint(request: Request,security: str = Depends(API_key_check)):
     config.reload_config()
     return  {"status": "200", "message": "Configuration reloaded successfully"}
 
@@ -41,22 +50,26 @@ app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.U
 
 # * Upload Image endpoint
 @app.post("/v1/upload")
-def upload(image: UploadFile = File(...), security: str = Depends(API_key_check)):
+@limiter.limit("5/minute")
+async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(API_key_check)):
     return upload_image(image)
 
 # * Delete Image endpoint
 @app.delete("/v1/delete")
-def delete(image_id: str, security: str = Depends(API_key_check)):
+@limiter.limit("5/minute")
+async def delete(request: Request, image_id: str, security: str = Depends(API_key_check)):
     return delete_image(image_id, security)
 
 # * Get Images endpoint
 @app.get("/v1/get-images")
-def get_images(extension: str = Query(default = ""), security: str = Depends(API_key_check)):
+@limiter.limit("5/minute")
+async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(API_key_check)):
     return get_image(security, extension)
 
 # * Get Images endpoint (Experimental)
 @app.get("/experimental/get-images")
-def get_images(extension: str = Query(default=""), security: str = Depends(API_key_check)):
+@limiter.limit("5/minute")
+async def get_images(request: Request, extension: str = Query(default=""), security: str = Depends(API_key_check)):
     return experimantal_get_image(extension, security)
 
 @app.exception_handler(404)

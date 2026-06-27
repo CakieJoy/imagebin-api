@@ -18,8 +18,17 @@ from delete import delete_image
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
+def get_ip_address(request: Request):
+    if config.BEHIND_PROXY:
+        cf_connecting_ip = request.headers.get("CF-Connecting-IP")
+        if cf_connecting_ip:
+            return cf_connecting_ip
+        x_forwarded_for = request.headers.get("X-Forwarded-For")
+        if x_forwarded_for:
+            return x_forwarded_for.split(",")[-1].strip()
+    return get_remote_address(request)
 
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_ip_address)
 
 fastapi_kwargs = {}
 templates = Jinja2Templates(directory="/app/data/templates")

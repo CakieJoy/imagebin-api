@@ -4,6 +4,8 @@ settings:
   URL_PREFIX: "/images" # * Example if you want to change this just do it
   UPLOAD_FOLDER: "images" # * Folder name for uploaded images.
   DISABLE_DOCS: True # * If you want to disable /docs and /redoc set this to True (config reload is not supported)
+  BEHIND_PROXY: True # * If you are using a reverse proxy like nginx or cloudflare set this to True
+
 supported_extensions:
   - ".jpg"
   - ".jpeg"

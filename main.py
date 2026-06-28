@@ -1,6 +1,5 @@
 from logging import config
 from fastapi.responses import JSONResponse
-from pygments.lexer import default
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from auth import API_key_check
 from delete import delete_image
@@ -15,18 +14,8 @@ from experimantal_get_images import experimantal_get_image
 from get_images import get_image
 from upload import upload_image
 from delete import delete_image
-from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-
-def get_ip_address(request: Request):
-    if config.BEHIND_PROXY:
-        cf_connecting_ip = request.headers.get("CF-Connecting-IP")
-        if cf_connecting_ip:
-            return cf_connecting_ip
-        x_forwarded_for = request.headers.get("X-Forwarded-For")
-        if x_forwarded_for:
-            return x_forwarded_for.split(",")[-1].strip()
-    return get_remote_address(request)
+from get_ip_address import get_ip_address
 
 limiter = Limiter(key_func=get_ip_address)
 

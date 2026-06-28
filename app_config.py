@@ -7,9 +7,10 @@ RAW_API_KEY = "my_very_very_secret_api_key"
 IMAGE_URL_PREFIX = "/images"
 SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
 DISABLE_DOCS = True
+BEHIND_PROXY = True
 
 def reload_config():
-    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS
+    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY
     
     with open("/app/data/config.yaml", "r") as config_file:
         data = yaml.safe_load(config_file)
@@ -20,6 +21,7 @@ def reload_config():
     IMAGE_URL_PREFIX = data["settings"]["URL_PREFIX"]
     SUPPORTED_EXTENSIONS = data["supported_extensions"]
     DISABLE_DOCS = data["settings"].get("DISABLE_DOCS")
+    BEHIND_PROXY = data["settings"].get("BEHIND_PROXY") 
     
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

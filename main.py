@@ -1,7 +1,7 @@
 from logging import config
 from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from auth import API_key_check
+from auth import API_key_check, Check_API_key_AuthV2, Create_API_key_AuthV2
 from delete import delete_image
 from fastapi import FastAPI, Query
 from fastapi import FastAPI, UploadFile, File, Request
@@ -12,7 +12,7 @@ import os
 import app_config as config
 from experimantal_get_images import experimantal_get_image
 from get_images import get_image
-from upload import upload_image
+from upload import upload_image, upload_image_authv2
 from delete import delete_image
 from slowapi.errors import RateLimitExceeded
 from get_ip_address import get_ip_address
@@ -46,29 +46,52 @@ if not os.path.exists("/app/data/" + config.UPLOAD_FOLDER):
 
 app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.UPLOAD_FOLDER), name="images")
 
-# * Upload Image endpoint
+# * Upload Image endpoint with AuthV1
 @app.post("/v1/upload")
 @limiter.limit("5/minute")
 async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(API_key_check)):
     return upload_image(image)
 
-# * Delete Image endpoint
+# * Delete Image endpoint with AuthV1
 @app.delete("/v1/delete")
 @limiter.limit("5/minute")
 async def delete(request: Request, image_id: str, security: str = Depends(API_key_check)):
     return delete_image(image_id, security)
 
-# * Get Images endpoint
+# * Get Images endpoint with AuthV1
 @app.get("/v1/get-images")
 @limiter.limit("5/minute")
 async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(API_key_check)):
     return get_image(security, extension)
 
-# * Get Images endpoint (Experimental)
+# * Get Images endpoint (Experimental) with AuthV1
 @app.get("/experimental/get-images")
 @limiter.limit("5/minute")
 async def get_images(request: Request, extension: str = Query(default=""), security: str = Depends(API_key_check)):
     return experimantal_get_image(extension, security)
+
+# * Upload Image endpoint with AuthV2
+@app.post("/v2/upload")
+@limiter.limit("5/minute")
+async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2)):
+    return upload_image_authv2(image, security)
+
+# * Delete Image endpoint with AuthV2
+@app.delete("/v2/delete")
+@limiter.limit("5/minute")
+async def delete(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2)):
+    return delete_image(image_id, security)
+
+# * Get Images endpoint with AuthV2
+@app.get("/v2/get-images")
+@limiter.limit("5/minute")
+async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2)):
+    return get_image(security, extension)
+
+@app.post("/v2/create-api-key")
+@limiter.limit("5/minute")
+async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2), new_key: str = Query()):
+    return Create_API_key_AuthV2(new_key,security)
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

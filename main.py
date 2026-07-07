@@ -1,7 +1,7 @@
 from logging import config
 from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from auth import API_key_check, Check_API_key_AuthV2, Create_API_key_AuthV2
+from auth import API_key_check, Check_API_key_AuthV2, Create_API_key_AuthV2, Delete_API_key_AuthV2
 from delete import delete_image
 from fastapi import FastAPI, Query
 from fastapi import FastAPI, UploadFile, File, Request
@@ -92,6 +92,12 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 @limiter.limit("5/minute")
 async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2), new_key: str = Query()):
     return Create_API_key_AuthV2(new_key,security)
+
+@app.post("/v2/delete-api-key")
+@limiter.limit("5/minute")
+async def delete_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2), entry_key: str = Query()):
+    return Delete_API_key_AuthV2(entry_key,security)
+
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

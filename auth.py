@@ -84,4 +84,18 @@ def Check_API_key_AuthV2(entry_key: str = Security(api_key_header)):
             "status": "200",
             "message": "API Key is valid"
      }
+    
+def Delete_API_key_AuthV2(entry_key: str = Security(api_key_header)):
+    conn = sqlite3.connect('/app/data/api_keys.db')
+    cursor = conn.cursor()
+    hashed_entry_key = hashlib.sha256(entry_key.encode()).hexdigest()
+    cursor.execute("DELETE FROM api_keys WHERE api_key = ?", (hashed_entry_key,))
+    conn.commit()
+    conn.close()
+    del entry_key
+    del hashed_entry_key
+    return {
+        "status": "200",
+        "message": "API Key deleted successfully"
+    }
 

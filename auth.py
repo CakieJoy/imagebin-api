@@ -43,11 +43,16 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS api_keys (
 cursor.execute("SELECT COUNT(*) FROM api_keys")
 api_key_count = cursor.fetchone()[0]
 
+conn.close()
+
 def Create_API_key_AuthV2(new_key: str = Security(api_key_header)):
+    conn = sqlite3.connect('api_keys.db')
+    cursor = conn.cursor()
     byte_key = new_key.encode('utf-8')
     hashed_key = bcrypt.hashpw(byte_key, bcrypt.gensalt())
     cursor.execute("INSERT INTO api_keys (api_key) VALUES (?)", (hashed_key,))
     conn.commit()
+    conn.close()
     del new_key
     del byte_key
     del hashed_key
@@ -68,8 +73,11 @@ else:
 
 # * Check the API key from the database
 def Check_API_key_AuthV2(entry_key: str = Security(api_key_header)):
+    conn = sqlite3.connect('api_keys.db')
+    cursor = conn.cursor()
     cursor.execute("SELECT api_key FROM api_keys WHERE api_key = ?", (entry_key,))
     in_db_key = cursor.fetchone()
+    conn.close()
     if in_db_key is None:
         raise HTTPException(status_code=403, detail="API Key is invalid")
 

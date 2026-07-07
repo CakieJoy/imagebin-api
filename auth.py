@@ -30,7 +30,7 @@ def API_key_check(entry_key: str = Security(api_key_header)):
 # * AuthV2
 
 # * Create a SQLite database
-conn = sqlite3.connect('api_keys.db')
+conn = sqlite3.connect('/app/data/api_keys.db')
 cursor = conn.cursor()
 
 # * Create a table

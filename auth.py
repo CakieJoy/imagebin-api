@@ -46,7 +46,7 @@ api_key_count = cursor.fetchone()[0]
 conn.close()
 
 def Create_API_key_AuthV2(new_key: str = Security(api_key_header)):
-    conn = sqlite3.connect('api_keys.db')
+    conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()
     hashed_key = hashlib.sha256(new_key.encode()).hexdigest()
     cursor.execute("INSERT INTO api_keys (api_key) VALUES (?)", (hashed_key,))
@@ -71,7 +71,7 @@ else:
 
 # * Check the API key from the database
 def Check_API_key_AuthV2(entry_key: str = Security(api_key_header)):
-    conn = sqlite3.connect('api_keys.db')
+    conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()
     hashed_entry_key = hashlib.sha256(entry_key.encode()).hexdigest()
     cursor.execute("SELECT api_key FROM api_keys WHERE api_key = ?", (hashed_entry_key,))

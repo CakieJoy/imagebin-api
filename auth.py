@@ -48,13 +48,11 @@ conn.close()
 def Create_API_key_AuthV2(new_key: str = Security(api_key_header)):
     conn = sqlite3.connect('api_keys.db')
     cursor = conn.cursor()
-    byte_key = new_key.encode('utf-8')
-    hashed_key = bcrypt.hashpw(byte_key, bcrypt.gensalt())
+    hashed_key = hashlib.sha256(new_key.encode()).hexdigest()
     cursor.execute("INSERT INTO api_keys (api_key) VALUES (?)", (hashed_key,))
     conn.commit()
     conn.close()
     del new_key
-    del byte_key
     del hashed_key
     return {
         "status": "200",
@@ -75,20 +73,15 @@ else:
 def Check_API_key_AuthV2(entry_key: str = Security(api_key_header)):
     conn = sqlite3.connect('api_keys.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT api_key FROM api_keys WHERE api_key = ?", (entry_key,))
+    hashed_entry_key = hashlib.sha256(entry_key.encode()).hexdigest()
+    cursor.execute("SELECT api_key FROM api_keys WHERE api_key = ?", (hashed_entry_key,))
     in_db_key = cursor.fetchone()
     conn.close()
     if in_db_key is None:
         raise HTTPException(status_code=403, detail="API Key is invalid")
-
-    db_hashed_key = in_db_key[0].encode('utf-8')
-    entry_key_bytes = entry_key.encode('utf-8')
-    if bcrypt.checkpw(entry_key_bytes, db_hashed_key):
+    else:
         return {
             "status": "200",
             "message": "API Key is valid"
      }
-    else:
-        raise HTTPException(status_code=403, detail="API Key is invalid")
-
 

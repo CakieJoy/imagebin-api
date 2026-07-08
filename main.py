@@ -73,8 +73,8 @@ async def get_images(request: Request, extension: str = Query(default=""), secur
 # * Upload Image endpoint with AuthV2
 @app.post("/v2/upload")
 @limiter.limit("5/minute")
-async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2)):
-    return upload_image_authv2(image, security)
+async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
+    return upload_image_authv2(security, image, req_permission="w")
 
 # * Delete Image endpoint with AuthV2
 @app.delete("/v2/delete")
@@ -90,8 +90,8 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 
 @app.post("/v2/create-api-key")
 @limiter.limit("5/minute")
-async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2), new_key: str = Query()):
-    return Create_API_key_AuthV2(new_key,security)
+async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key: str = Query(), new_key_permissions: str = Query()):
+    return Create_API_key_AuthV2(new_key,new_key_permissions, req_permission="a", security=security)
 
 @app.post("/v2/delete-api-key")
 @limiter.limit("5/minute")

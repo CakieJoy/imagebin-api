@@ -36,7 +36,8 @@ cursor = conn.cursor()
 # * Create a table
 cursor.execute('''CREATE TABLE IF NOT EXISTS api_keys (
                     uid INTEGER PRIMARY KEY AUTOINCREMENT,
-                    api_key TEXT NOT NULL
+                    api_key TEXT NOT NULL,
+                    permissions TEXT NOT NULL
                 )''')
 
 # * Check the database have an existing api key
@@ -45,44 +46,55 @@ api_key_count = cursor.fetchone()[0]
 
 conn.close()
 
-def Create_API_key_AuthV2(new_key: str, security: str = Security(api_key_header)):
+def Create_API_key_AuthV2(new_key: str, new_key_permissions: str, req_permission: str = "a", security: str = Security(api_key_header)):
     conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()
     hashed_key = hashlib.sha256(new_key.encode()).hexdigest()
-    cursor.execute("INSERT INTO api_keys (api_key) VALUES (?)", (hashed_key,))
+    print(f"perm type(permissions): {type(new_key_permissions)} text {new_key_permissions}", flush=True)
+    cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, new_key_permissions))
     conn.commit()
     conn.close()
     del hashed_key
     return {
         "status": "200",
         "message": "New API Key created successfully",
-        "api_key": new_key
+        "api_key": new_key,
     }
     
 if api_key_count == 0:
     # * Generate the default API key
     new_api_key = secrets.token_hex(32)
-    Create_API_key_AuthV2(new_api_key)
+    Create_API_key_AuthV2(new_api_key, "rwa")
     print(f"Generated default API key: {new_api_key}", flush=True)
     print("Don't forget delete this API Key and generate a new one for security reasons.", flush=True)
 else:
     print("API key already exists in the database.")
 
 # * Check the API key from the database
-def Check_API_key_AuthV2(entry_key: str = Security(api_key_header)):
-    conn = sqlite3.connect('/app/data/api_keys.db')
-    cursor = conn.cursor()
-    hashed_entry_key = hashlib.sha256(entry_key.encode()).hexdigest()
-    cursor.execute("SELECT api_key FROM api_keys WHERE api_key = ?", (hashed_entry_key,))
-    in_db_key = cursor.fetchone()
-    conn.close()
-    if in_db_key is None:
-        raise HTTPException(status_code=403, detail="API Key is invalid")
-    else:
-        return {
-            "status": "200",
-            "message": "API Key is valid"
-     }
+def Check_API_key_AuthV2(req_permission: str):
+    def dependecy(entry_key: str = Security(api_key_header)):
+        
+    
+        conn = sqlite3.connect('/app/data/api_keys.db')
+        cursor = conn.cursor()
+        hashed_entry_key = hashlib.sha256(entry_key.encode()).hexdigest()
+        cursor.execute("SELECT api_key FROM api_keys WHERE api_key = ?", (hashed_entry_key,))
+        in_db_key = cursor.fetchone()
+        cursor.execute("SELECT permissions FROM api_keys WHERE api_key = ?", (hashed_entry_key,))
+        permissions = cursor.fetchone()
+        conn.close()
+        if permissions is not None:
+            if req_permission not in permissions[0]:
+                raise HTTPException(status_code=403, detail="API Key does not have the required permission")
+
+        if in_db_key is None:
+            raise HTTPException(status_code=403, detail="API Key is invalid")
+        else:
+            return {
+                "status": "200",
+                "message": "API Key is valid"
+        }
+    return dependecy
     
 def Delete_API_key_AuthV2(entry_key: str = Security(api_key_header)):
     conn = sqlite3.connect('/app/data/api_keys.db')

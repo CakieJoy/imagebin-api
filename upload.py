@@ -29,7 +29,7 @@ def upload_image(image: UploadFile = File(...), security: str = Depends(API_key_
         raise HTTPException(status_code=400, detail={"message": "Unsupported file type", "supported_extensions": config.SUPPORTED_EXTENSIONS})
     
 
-def upload_image_authv2(image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2)):
+def upload_image_authv2(security: str, image: UploadFile = File(...), req_permission: str = "w"):
     image_extension = os.path.splitext(image.filename)[1]
     
     if image_extension in config.SUPPORTED_EXTENSIONS:

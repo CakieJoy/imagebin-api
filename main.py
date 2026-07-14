@@ -95,7 +95,7 @@ async def create_api_key(request: Request, security: str = Depends(Check_API_key
 
 @app.post("/v2/delete-api-key")
 @limiter.limit("5/minute")
-async def delete_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2), entry_key: str = Query()):
+async def delete_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query()):
     return Delete_API_key_AuthV2(entry_key,security)
 
 

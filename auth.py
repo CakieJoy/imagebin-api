@@ -101,7 +101,7 @@ def Check_API_key_AuthV2(req_permission: str):
         }
     return dependecy
     
-def Delete_API_key_AuthV2(entry_key: str = Security(api_key_header)):
+def Delete_API_key_AuthV2(entry_key: str = Security(api_key_header), req_permission: str = "a"):
     conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()
     hashed_entry_key = hashlib.sha256(entry_key.encode()).hexdigest()

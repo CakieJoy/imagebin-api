@@ -2,7 +2,7 @@ from logging import config
 from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from auth import API_key_check, Check_API_key_AuthV2, Create_API_key_AuthV2, Delete_API_key_AuthV2
-from delete import delete_image
+from delete import delete_image, delete_image_authv2
 from fastapi import FastAPI, Query
 from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.staticfiles import StaticFiles
@@ -70,6 +70,9 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 async def get_images(request: Request, extension: str = Query(default=""), security: str = Depends(API_key_check)):
     return experimantal_get_image(extension, security)
 
+
+# * Switching AuthV2 after this line
+
 # * Upload Image endpoint with AuthV2
 @app.post("/v2/upload")
 @limiter.limit("5/minute")
@@ -79,8 +82,8 @@ async def upload(request: Request, image: UploadFile = File(...), security: str 
 # * Delete Image endpoint with AuthV2
 @app.delete("/v2/delete")
 @limiter.limit("5/minute")
-async def delete(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2)):
-    return delete_image(image_id, security)
+async def delete(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
+    return delete_image_authv2(image_id, security)
 
 # * Get Images endpoint with AuthV2
 @app.get("/v2/get-images")

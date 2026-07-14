@@ -88,7 +88,7 @@ async def delete(request: Request, image_id: str, security: str = Depends(Check_
 # * Get Images endpoint with AuthV2
 @app.get("/v2/get-images")
 @limiter.limit("5/minute")
-async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2)):
+async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="r"))):
     return get_image(security, extension)
 
 @app.post("/v2/create-api-key")

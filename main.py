@@ -106,29 +106,29 @@ async def get_images(request: Request, extension: str = Query(default=""), secur
 # * Switching AuthV2 after this line
 
 # * Upload Image endpoint with AuthV2
-@app.post("/v2/upload")
+@app.post("/api/v2/upload")
 @limiter.limit("5/minute")
 async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
     return upload_image_authv2(security, image, req_permission="w")
 
 # * Delete Image endpoint with AuthV2
-@app.delete("/v2/delete")
+@app.delete("/api/v2/delete")
 @limiter.limit("5/minute")
 async def delete(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
     return delete_image_authv2(image_id, security)
 
 # * Get Images endpoint with AuthV2
-@app.get("/v2/get-images")
+@app.get("/api/v2/get-images")
 @limiter.limit("5/minute")
 async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="r"))):
     return get_image(security, extension)
 
-@app.post("/v2/create-api-key")
+@app.post("/api/v2/create-api-key")
 @limiter.limit("5/minute")
 async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key: str = Query(), new_key_permissions: str = Query()):
     return Create_API_key_AuthV2(new_key,new_key_permissions, req_permission="a", security=security)
 
-@app.post("/v2/delete-api-key")
+@app.post("/api/v2/delete-api-key")
 @limiter.limit("5/minute")
 async def delete_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query()):
     return Delete_API_key_AuthV2(entry_key,security)

@@ -3,8 +3,7 @@ import uuid
 from fastapi import UploadFile, File, Depends, HTTPException
 
 import app_config as config
-from auth import API_key_check, Check_API_key_AuthV2
-
+from authv1 import API_key_check
 
 
 def upload_image(image: UploadFile = File(...), security: str = Depends(API_key_check)):

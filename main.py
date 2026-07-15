@@ -1,7 +1,11 @@
 from logging import config
+import secrets
 from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from auth import API_key_check, Check_API_key_AuthV2, Create_API_key_AuthV2, Delete_API_key_AuthV2
+from authv1 import API_key_check
+from auth.v2_check_key import Check_API_key_AuthV2
+from auth.v2_create_key import Create_API_key_AuthV2
+from auth.v2_del_key import Delete_API_key_AuthV2
 from delete import delete_image, delete_image_authv2
 from fastapi import FastAPI, Query
 from fastapi import FastAPI, UploadFile, File, Request
@@ -16,6 +20,7 @@ from upload import upload_image, upload_image_authv2
 from delete import delete_image
 from slowapi.errors import RateLimitExceeded
 from get_ip_address import get_ip_address
+import sqlite3
 
 limiter = Limiter(key_func=get_ip_address)
 
@@ -26,6 +31,33 @@ if config.DISABLE_DOCS:
     fastapi_kwargs.update({"docs_url": None, "redoc_url": None})
 else:
     fastapi_kwargs.update({"docs_url": "/docs", "redoc_url": "/redoc"})
+
+# * Create a SQLite database
+conn = sqlite3.connect('/app/data/api_keys.db')
+cursor = conn.cursor()
+
+# * Create a table
+cursor.execute('''CREATE TABLE IF NOT EXISTS api_keys (
+                    uid INTEGER PRIMARY KEY AUTOINCREMENT,
+                    api_key TEXT NOT NULL,
+                    permissions TEXT NOT NULL
+                )''')
+
+# * Check the database have an existing api key
+cursor.execute("SELECT COUNT(*) FROM api_keys")
+api_key_count = cursor.fetchone()[0]
+
+conn.close()
+
+    
+if api_key_count == 0:
+    # * Generate the default API key
+    new_api_key = secrets.token_hex(32)
+    Create_API_key_AuthV2(new_api_key, "rwa")
+    print(f"Generated default API key: 1.{new_api_key}", flush=True)
+    print("Don't forget delete this API Key and generate a new one for security reasons.", flush=True)
+else:
+    print("API key already exists in the database.")
 
 app = FastAPI(**fastapi_kwargs)
 

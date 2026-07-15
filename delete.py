@@ -1,11 +1,10 @@
 import os
-import uuid
 
 from fastapi import Depends, HTTPException
 import app_config as config
 
-from auth import API_key_check, Check_API_key_AuthV2  
-
+from authv1 import API_key_check
+from auth.v2_check_key import Check_API_key_AuthV2
 
 
 def delete_image(image_id: str, security: str = Depends(API_key_check)):

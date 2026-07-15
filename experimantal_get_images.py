@@ -2,7 +2,7 @@ import os
 import glob
 from fastapi import Depends, HTTPException
 import app_config as config
-from auth import API_key_check
+from authv1 import API_key_check
 
 def experimantal_get_image(extension: str, security: str = Depends(API_key_check)):
     images_path = os.path.join("/app/data", config.UPLOAD_FOLDER)

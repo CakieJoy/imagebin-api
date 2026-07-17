@@ -15,7 +15,7 @@ from fastapi.templating import Jinja2Templates
 import os
 import app_config as config
 from experimantal_get_images import experimantal_get_image
-from get_images import get_image
+from get_images import get_image, get_image_authv2
 from upload import upload_image, upload_image_authv2
 from delete import delete_image
 from slowapi.errors import RateLimitExceeded
@@ -121,7 +121,7 @@ async def delete(request: Request, image_id: str, security: str = Depends(Check_
 @app.get("/api/v2/get-images")
 @limiter.limit("5/minute")
 async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="r"))):
-    return get_image(security, extension)
+    return get_image_authv2(security, extension)
 
 @app.post("/api/v2/create-api-key")
 @limiter.limit("5/minute")

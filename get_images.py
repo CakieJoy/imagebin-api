@@ -21,7 +21,7 @@ def get_image(security: str = Depends(API_key_check), extension: str = ""):
             return {"status": "200", "images-list": filtered_images}
         
 
-def get_image(security: str = Depends(Check_API_key_AuthV2(req_permission="r")), extension: str = ""):
+def get_image_authv2(security: str = Depends(Check_API_key_AuthV2(req_permission="r")), extension: str = ""):
     images_path = os.path.join("/app/data", config.UPLOAD_FOLDER)
     if extension == "":
         all_images = os.listdir(images_path)

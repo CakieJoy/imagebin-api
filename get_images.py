@@ -18,7 +18,7 @@ def get_image(security: str = Depends(API_key_check), extension: str = ""):
         if filtered_images == []:
             raise HTTPException(status_code=404, detail="Not found anything")
         else:
-            return {"status": "200", "images-list": filtered_images}
+            return {"status": "200", "images-list": filtered_images, "message": "The APIv1 is deprecated, please us the APIv2 endpoints. APIv1 will be removed in the future."}
         
 
 def get_image_authv2(security: str = Depends(Check_API_key_AuthV2(req_permission="r")), extension: str = ""):

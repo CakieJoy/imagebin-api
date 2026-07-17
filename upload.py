@@ -22,7 +22,8 @@ def upload_image(image: UploadFile = File(...), security: str = Depends(API_key_
         return {
             "status": "200",
             "image_id": image_id,
-            "url": access_url
+            "url": access_url,
+            "message": "The APIv1 is deprecated, please us the APIv2 endpoints. APIv1 will be removed in the future."
         }
     else:
         raise HTTPException(status_code=400, detail={"message": "Unsupported file type", "supported_extensions": config.SUPPORTED_EXTENSIONS})

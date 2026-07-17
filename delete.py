@@ -11,7 +11,7 @@ def delete_image(image_id: str, security: str = Depends(API_key_check)):
     image_path = os.path.join("/app/data/" + config.UPLOAD_FOLDER, image_id)
     if os.path.exists(image_path):
         os.remove(image_path)
-        return {"status": "200", "message": "Image deleted successfully"}
+        return {"status": "200", "message": "Image deleted successfully", "message": "The APIv1 is deprecated, please us the APIv2 endpoints. APIv1 will be removed in the future."}
     else:
         raise HTTPException(status_code=404, detail="Image not found")
     

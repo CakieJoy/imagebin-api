@@ -82,7 +82,7 @@ app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.U
 @app.post("/v1/upload")
 @limiter.limit("5/minute")
 async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(API_key_check)):
-    return upload_image(image)
+    return upload_image(image, security)
 
 # * Delete Image endpoint with AuthV1
 @app.delete("/v1/delete")
@@ -133,6 +133,10 @@ async def create_api_key(request: Request, security: str = Depends(Check_API_key
 async def delete_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query()):
     return Delete_API_key_AuthV2(entry_key,security)
 
+@app.post("/api/v2/reload_config")
+@limiter.limit("5/minute")
+async def reload_config_endpoint(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a"))):
+    config.reload_config_authv2(security)
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

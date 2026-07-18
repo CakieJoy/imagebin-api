@@ -150,7 +150,11 @@ Creates an API key
 
 #### Successful response example(`200 OK`)
 ```json
-not avaailible yet...
+{
+    "status": "200",
+    "message": "New API Key created successfully",
+    "api_key": "6.notsecretkeylol"
+}
 ```
 
 ### 6. Delete API Key
@@ -174,7 +178,10 @@ Creates an API key
 
 #### Successful response example(`200 OK`)
 ```json
-not avaailible yet...
+{
+    "status": "200",
+    "message": "API Key deleted successfully"
+}
 ```
 
 

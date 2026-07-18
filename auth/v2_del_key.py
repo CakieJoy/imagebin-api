@@ -26,5 +26,6 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
                 "message": "API Key deleted successfully"
             }
     except Exception as e:
+        # todo: if key doesnt exist its returns 500 fix this to return 404
         print(f"Error deleting API key: {str(e)}", flush=True)
         raise HTTPException(status_code=500, detail="Error occurred while deleting API key")

@@ -1,0 +1,40 @@
+name: CD - Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      rc_tag:
+        description: 'RC tag(ex: 2026.1807.12-rc)'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Pull RC Image
+      run: |
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ github.event.inputs.rc_tag }}
+
+    - name: Retag for Production
+      run: |
+        # Girdiden '-rc' kısmını silerek temiz versiyon adını buluyoruz
+        CLEAN_VERSION=$(echo "${{ github.event.inputs.rc_tag }}" | sed 's/-rc//')
+        
+        # Aynı imajı hem temiz versiyon hem de latest olarak etiketliyoruz
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ github.event.inputs.rc_tag }} ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:$CLEAN_VERSION
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ github.event.inputs.rc_tag }} ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:latest
+        
+        # Script içinde kullanabilmek için env'a yazıyoruz
+        echo "CLEAN_VERSION=$CLEAN_VERSION" >> $GITHUB_ENV
+
+    - name: Push Production Tags
+      run: |
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ env.CLEAN_VERSION }}
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:latest

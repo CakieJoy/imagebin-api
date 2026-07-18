@@ -1,0 +1,58 @@
+name: CI - Build and Test Image
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  ci-process:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Generate Dynamic Version
+      id: versioning
+      run: |
+        YEAR=$(date +%Y)
+        DAY_MONTH=$(date +%d%m)
+        # github.run_number her çalışmada 1 artan bir sayaçtır, günlük benzersizlik sağlar.
+        BUILD_NUM=${{ github.run_number }} 
+        
+        VERSION_TAG="${YEAR}.${DAY_MONTH}.${BUILD_NUM}-rc"
+        echo "GENERATED_VERSION=$VERSION_TAG" >> $GITHUB_OUTPUT
+        echo "Generated version tag: $VERSION_TAG"
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Toto Test Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./toto.dockerfile
+        push: false
+        load: true  
+        tags: imagebin-api:test-toto
+
+    - name: Run Unit Tests
+      run: |
+        docker run --rm imagebin-api:test-toto
+
+    - name: Build and Push CI Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ steps.versioning.outputs.GENERATED_VERSION }}

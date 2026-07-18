@@ -24,7 +24,7 @@ jobs:
         file: ./toto.dockerfile
         push: false
         load: true  
-        tags: imagebin-api:$toto
+        tags: imagebin-api:toto
 
     - name: Run Unit Tests
       run: |

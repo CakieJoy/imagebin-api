@@ -3,8 +3,10 @@ import secrets
 from fastapi import HTTPException, Security
 from fastapi.security.api_key import APIKeyHeader
 import app_config
+import sqlite3
+import bcrypt
 
-
+# * AuthV1
 RAW_API_KEY = app_config.RAW_API_KEY
 HASHED_API_KEY = hashlib.sha256(RAW_API_KEY.encode()).hexdigest()
 
@@ -24,3 +26,4 @@ def API_key_check(entry_key: str = Security(api_key_header)):
         "status": "200",
         "message": "API Key is valid"
     }
+

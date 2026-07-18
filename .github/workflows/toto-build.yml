@@ -28,4 +28,4 @@ jobs:
 
     - name: Run Unit Tests
       run: |
-        docker run --rm imagebin-api:${{ github.event.inputs.version }}-toto
+        docker run --rm imagebin-api:$toto

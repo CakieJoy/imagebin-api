@@ -1,13 +1,8 @@
 name: Unit Test Docker Image Build and Run
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'version number '
-        required: true
-        default: 'v1.0.0'
-        type: string
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   build-and-push:
@@ -29,8 +24,8 @@ jobs:
         file: ./toto.dockerfile
         push: false
         load: true  
-        tags: imagebin-api:${{ github.event.inputs.version }}-toto
+        tags: imagebin-api:toto
 
     - name: Run Unit Tests
       run: |
-        docker run --rm imagebin-api:${{ github.event.inputs.version }}-toto
+        docker run --rm imagebin-api:toto

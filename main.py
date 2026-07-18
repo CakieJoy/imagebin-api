@@ -14,7 +14,6 @@ from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi.templating import Jinja2Templates
 import os
 import app_config as config
-from experimantal_get_images import experimantal_get_image
 from get_images import get_image, get_image_authv2
 from upload import upload_image, upload_image_authv2
 from delete import delete_image
@@ -96,11 +95,7 @@ async def delete(request: Request, image_id: str, security: str = Depends(API_ke
 async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(API_key_check)):
     return get_image(security, extension)
 
-# * Get Images endpoint (Experimental) with AuthV1
-@app.get("/experimental/get-images")
-@limiter.limit("5/minute")
-async def get_images(request: Request, extension: str = Query(default=""), security: str = Depends(API_key_check)):
-    return experimantal_get_image(extension, security)
+
 
 
 # * Switching AuthV2 after this line

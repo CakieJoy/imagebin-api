@@ -14,6 +14,7 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
         cursor = conn.cursor()
         cursor.execute("DELETE FROM api_keys WHERE uid = ?", (uid_part,))
         if cursor.rowcount == 0:
+            conn.close()
             raise HTTPException(status_code=404, detail="API Key not found")
         else:
             conn.commit()
@@ -28,4 +29,5 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
     except Exception as e:
         # todo: if key doesnt exist its returns 500 fix this to return 404
         print(f"Error deleting API key: {str(e)}", flush=True)
+        conn.close()
         raise HTTPException(status_code=500, detail="Error occurred while deleting API key")

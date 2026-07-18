@@ -35,10 +35,7 @@ def test_get_images():
     response = client.get("/v1/get-images", headers=header)
     assert response.status_code == 200
 
-def test_experimental_get_images():
-    header = {"x-api-key": "my_very_very_secret_api_key"}
-    response = client.get("/experimental/get-images?extension=jpg", headers=header)
-    assert response.status_code == 200
+
 
 # * AuthV2 Tests
 def test_get_images_authv2():

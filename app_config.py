@@ -79,12 +79,53 @@ def reload_config_authv2(req_permision: str = "a", security: str = Security(api_
     with open("/app/data/config.yaml", "r") as config_file:
         data = yaml.safe_load(config_file)
 
-    UPLOAD_FOLDER = data["settings"]["UPLOAD_FOLDER"]
-    DOMAIN = data["settings"]["DOMAIN"]
-    RAW_API_KEY = data["settings"]["API_KEY"]
-    IMAGE_URL_PREFIX = data["settings"]["URL_PREFIX"]
-    SUPPORTED_EXTENSIONS = data["supported_extensions"]
-    DISABLE_DOCS = data["settings"].get("DISABLE_DOCS")
-    BEHIND_PROXY = data["settings"].get("BEHIND_PROXY") 
-    
+    settings = data.get("settings", {})
+
+    missing_settings = []
+
+    if "UPLOAD_FOLDER" in settings:
+        UPLOAD_FOLDER = settings.get("UPLOAD_FOLDER")
+    else:
+        missing_settings.append("UPLOAD_FOLDER")
+        UPLOAD_FOLDER = "images"
+
+    if "DOMAIN" in settings:
+        DOMAIN = settings.get("DOMAIN")
+    else:
+        missing_settings.append("DOMAIN")
+        DOMAIN = "localhost:8000"
+
+    if "RAW_API_KEY" in settings:
+        RAW_API_KEY = settings.get("RAW_API_KEY")
+    else:
+        missing_settings.append("RAW_API_KEY")
+        RAW_API_KEY = "my_very_very_secret_api_key"
+
+    if "URL_PREFIX" in settings:
+        IMAGE_URL_PREFIX = settings.get("URL_PREFIX")
+    else:
+        missing_settings.append("URL_PREFIX")
+        IMAGE_URL_PREFIX = "/images"
+
+    if "SUPPORTED_EXTENSIONS" in settings:
+        SUPPORTED_EXTENSIONS = settings.get("SUPPORTED_EXTENSIONS")
+    else:
+        missing_settings.append("SUPPORTED_EXTENSIONS")
+        SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
+
+    if "DISABLE_DOCS" in settings:
+        DISABLE_DOCS = settings.get("DISABLE_DOCS")
+    else:
+        missing_settings.append("DISABLE_DOCS")
+        DISABLE_DOCS = True
+
+    if "BEHIND_PROXY" in settings:
+        BEHIND_PROXY = settings.get("BEHIND_PROXY")
+    else:
+        missing_settings.append("BEHIND_PROXY")
+        BEHIND_PROXY = True
+    if missing_settings:
+        print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.")
+        raise ValueError(f"Missing settings in config.yaml: {', '.join(missing_settings)}. Please check the configuration file.")
+
     return {"status": "200", "message": "Configuration reloaded successfully"}

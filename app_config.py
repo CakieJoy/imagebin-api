@@ -19,13 +19,52 @@ def reload_config():
 
     settings = data.get("settings", {})
 
-    UPLOAD_FOLDER = settings.get("UPLOAD_FOLDER", "images")
-    DOMAIN = settings.get("DOMAIN", "localhost:8000")
-    RAW_API_KEY = settings.get("API_KEY", "my_very_very_secret_api_key")
-    IMAGE_URL_PREFIX = settings.get("URL_PREFIX", "/images")
-    SUPPORTED_EXTENSIONS = data.get("supported_extensions", [".jpg", ".jpeg", ".png", ".gif"])
-    DISABLE_DOCS = settings.get("DISABLE_DOCS", True)
-    BEHIND_PROXY = settings.get("BEHIND_PROXY", True)
+    missing_settings = []
+
+    if "UPLOAD_FOLDER" in settings:
+        UPLOAD_FOLDER = settings.get("UPLOAD_FOLDER")
+    else:
+        missing_settings.append("UPLOAD_FOLDER")
+        UPLOAD_FOLDER = "images"
+
+    if "DOMAIN" in settings:
+        DOMAIN = settings.get("DOMAIN")
+    else:
+        missing_settings.append("DOMAIN")
+        DOMAIN = "localhost:8000"
+
+    if "RAW_API_KEY" in settings:
+        RAW_API_KEY = settings.get("RAW_API_KEY")
+    else:
+        missing_settings.append("RAW_API_KEY")
+        RAW_API_KEY = "my_very_very_secret_api_key"
+
+    if "URL_PREFIX" in settings:
+        IMAGE_URL_PREFIX = settings.get("URL_PREFIX")
+    else:
+        missing_settings.append("URL_PREFIX")
+        IMAGE_URL_PREFIX = "/images"
+
+    if "SUPPORTED_EXTENSIONS" in settings:
+        SUPPORTED_EXTENSIONS = settings.get("SUPPORTED_EXTENSIONS")
+    else:
+        missing_settings.append("SUPPORTED_EXTENSIONS")
+        SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
+
+    if "DISABLE_DOCS" in settings:
+        DISABLE_DOCS = settings.get("DISABLE_DOCS")
+    else:
+        missing_settings.append("DISABLE_DOCS")
+        DISABLE_DOCS = True
+
+    if "BEHIND_PROXY" in settings:
+        BEHIND_PROXY = settings.get("BEHIND_PROXY")
+    else:
+        missing_settings.append("BEHIND_PROXY")
+        BEHIND_PROXY = True
+    if missing_settings:
+        print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.")
+        raise ValueError(f"Missing settings in config.yaml: {', '.join(missing_settings)}. Please check the configuration file.")
 
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

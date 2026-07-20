@@ -45,8 +45,8 @@ def reload_config():
         missing_settings.append("URL_PREFIX")
         IMAGE_URL_PREFIX = "/images"
 
-    if "SUPPORTED_EXTENSIONS" in settings:
-        SUPPORTED_EXTENSIONS = settings.get("SUPPORTED_EXTENSIONS")
+    if "SUPPORTED_EXTENSIONS" in data:
+        SUPPORTED_EXTENSIONS = data.get("SUPPORTED_EXTENSIONS")
     else:
         missing_settings.append("SUPPORTED_EXTENSIONS")
         SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
@@ -107,8 +107,8 @@ def reload_config_authv2(req_permision: str = "a", security: str = Security(api_
         missing_settings.append("URL_PREFIX")
         IMAGE_URL_PREFIX = "/images"
 
-    if "SUPPORTED_EXTENSIONS" in settings:
-        SUPPORTED_EXTENSIONS = settings.get("SUPPORTED_EXTENSIONS")
+    if "SUPPORTED_EXTENSIONS" in data:
+        SUPPORTED_EXTENSIONS = data.get("SUPPORTED_EXTENSIONS")
     else:
         missing_settings.append("SUPPORTED_EXTENSIONS")
         SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]

@@ -33,10 +33,10 @@ def reload_config():
         missing_settings.append("DOMAIN")
         DOMAIN = "localhost:8000"
 
-    if "RAW_API_KEY" in settings:
-        RAW_API_KEY = settings.get("RAW_API_KEY")
+    if "API_KEY" in settings:
+        RAW_API_KEY = settings.get("API_KEY")
     else:
-        missing_settings.append("RAW_API_KEY")
+        missing_settings.append("API_KEY")
         RAW_API_KEY = "my_very_very_secret_api_key"
 
     if "URL_PREFIX" in settings:
@@ -95,10 +95,10 @@ def reload_config_authv2(req_permision: str = "a", security: str = Security(api_
         missing_settings.append("DOMAIN")
         DOMAIN = "localhost:8000"
 
-    if "RAW_API_KEY" in settings:
-        RAW_API_KEY = settings.get("RAW_API_KEY")
+    if "API_KEY" in settings:
+        RAW_API_KEY = settings.get("API_KEY")
     else:
-        missing_settings.append("RAW_API_KEY")
+        missing_settings.append("API_KEY")
         RAW_API_KEY = "my_very_very_secret_api_key"
 
     if "URL_PREFIX" in settings:

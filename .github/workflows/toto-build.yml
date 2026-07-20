@@ -1,8 +1,8 @@
 name: Unit Test Docker Image Build and Run
 
 on:
-  pull_request:
-    branches: [ main, master ]
+  push:
+    branches: [ advanced-tests ]
 
 jobs:
   run-tests:

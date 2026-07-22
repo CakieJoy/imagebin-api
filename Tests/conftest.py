@@ -1,4 +1,3 @@
-from Tests.upload_test import test_upload_image_success, test_upload_image_with_invalid_api_key, test_upload_image_without_api_key, test_upload_image_without_image
 from fastapi.testclient import TestClient
 import pytest
 from main import app
@@ -23,16 +22,8 @@ def img_id():
     yield img_id
 
 
-# * AuthV2 Tests
 
 
-test_upload_image_success()
-
-test_upload_image_without_image()
-
-test_upload_image_without_api_key()
-
-test_upload_image_with_invalid_api_key()
 
 def test_get_images_authv2():
     header = {"x-api-key": "1.very_secret_key_100_real"}

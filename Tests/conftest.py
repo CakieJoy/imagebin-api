@@ -5,9 +5,6 @@ from main import limiter
 
 client = TestClient(app)
 
-
-
-
 @pytest.fixture(autouse=True)
 def clear_rate_limit():
     limiter._storage.reset()
@@ -21,8 +18,3 @@ def img_id():
     img_id = response.json()["image_id"]
     yield img_id
 
-
-def test_reload_config():
-    header = {"x-api-key": "1.very_secret_key_100_real"}
-    response = client.post("/api/v2/reload_config", headers=header)
-    assert response.status_code == 200

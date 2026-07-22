@@ -22,15 +22,6 @@ def img_id():
     yield img_id
 
 
-
-
-
-def test_get_images_authv2():
-    header = {"x-api-key": "1.very_secret_key_100_real"}
-    response = client.get("/api/v2/get-images", headers=header)
-    assert response.status_code == 200
-
-
 def test_reload_config():
     header = {"x-api-key": "1.very_secret_key_100_real"}
     response = client.post("/api/v2/reload_config", headers=header)

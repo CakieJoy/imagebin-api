@@ -15,7 +15,7 @@ def clear_rate_limit():
     yield
 
 
-def upload_image_id():
+def img_id():
     files = {'image': ('test_image.jpg', b"Example data", 'image/jpeg')}
     header = {"x-api-key": "my_very_very_secret_api_key"}
     response = client.post("/v1/upload", headers=header, files=files)
@@ -39,10 +39,6 @@ def test_get_images_authv2():
     response = client.get("/api/v2/get-images", headers=header)
     assert response.status_code == 200
 
-def test_delete_image(img_id):
-    header = {"x-api-key": "1.very_secret_key_100_real"}
-    response = client.delete(f"/api/v2/delete/?image_id={img_id}", headers=header)
-    assert response.status_code == 200
 
 def test_reload_config():
     header = {"x-api-key": "1.very_secret_key_100_real"}

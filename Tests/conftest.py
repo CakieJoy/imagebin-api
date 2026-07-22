@@ -14,7 +14,7 @@ def clear_rate_limit():
     limiter._storage.reset()
     yield
 
-
+@pytest.fixture()
 def img_id():
     files = {'image': ('test_image.jpg', b"Example data", 'image/jpeg')}
     header = {"x-api-key": "my_very_very_secret_api_key"}

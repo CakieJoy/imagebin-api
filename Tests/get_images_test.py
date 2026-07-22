@@ -10,7 +10,7 @@ def test_get_images_success():
     assert response.status_code == 200
 
 def test_get_images_without_api_key():
-    response = client.get("/api/v2/get-images", headers=header)
+    response = client.get("/api/v2/get-images")
     assert response.status_code == 401
 
 def test_get_images_with_invalid_api_key():

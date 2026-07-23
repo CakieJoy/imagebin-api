@@ -46,7 +46,7 @@ def reload_config():
         IMAGE_URL_PREFIX = "/images"
 
     if "SUPPORTED_EXTENSIONS" in data:
-        SUPPORTED_EXTENSIONS = data.get("SUPPORTED_EXTENSIONS")
+        SUPPORTED_EXTENSIONS = data["SUPPORTED_EXTENSIONS"]
     else:
         missing_settings.append("SUPPORTED_EXTENSIONS")
         SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
@@ -108,7 +108,7 @@ def reload_config_authv2(req_permision: str = "a", security: str = Security(api_
         IMAGE_URL_PREFIX = "/images"
 
     if "SUPPORTED_EXTENSIONS" in data:
-        SUPPORTED_EXTENSIONS = data.get("SUPPORTED_EXTENSIONS")
+        SUPPORTED_EXTENSIONS = data["SUPPORTED_EXTENSIONS"]
     else:
         missing_settings.append("SUPPORTED_EXTENSIONS")
         SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]

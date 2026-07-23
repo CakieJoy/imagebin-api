@@ -21,7 +21,9 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
         # * if key in the db
         conn = sqlite3.connect("/app/data/api_keys.db")
         cursor = conn.cursor
-        cursor.excecute("UPDATE api_key SET permissions = ?", (new_permissions,), "WHERE uid = ?", (uid_part,),)
+        cursor.execute("UPDATE api_key SET permissions = ? WHERE uid = ?", (new_permissions, uid_part))
+        conn.commit()
+        conn.close()
     else:
         # * if key not exist in the db
         raise HTTPException(status="404", detail="Entry key not found.")

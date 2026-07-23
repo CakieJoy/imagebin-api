@@ -24,6 +24,10 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
         cursor.execute("UPDATE api_key SET permissions = ? WHERE uid = ?", (new_permissions, uid_part))
         conn.commit()
         conn.close()
+        return {
+            "status": "200",
+            "message": "Permission changed successfully"
+        }
     else:
         # * if key not exist in the db
         raise HTTPException(status="404", detail="Entry key not found.")

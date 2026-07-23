@@ -6,6 +6,7 @@ from authv1 import API_key_check
 from auth.v2_check_key import Check_API_key_AuthV2
 from auth.v2_create_key import Create_API_key_AuthV2
 from auth.v2_del_key import Delete_API_key_AuthV2
+from auth.v2_update_perms import Update_API_Permissions
 from delete import delete_image, delete_image_authv2
 from fastapi import FastAPI, Query
 from fastapi import FastAPI, UploadFile, File, Request
@@ -132,6 +133,11 @@ async def delete_api_key(request: Request, security: str = Depends(Check_API_key
 @limiter.limit("5/minute")
 async def reload_config_endpoint(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a"))):
     config.reload_config_authv2(security)
+
+@app.post("/api/v2/update-permissions")
+@limiter.limit("5/minute")
+async def update_perm_endpoint(request: Request,entry_key: str,new_permissions,security: str = Depends(Check_API_key_AuthV2(req_permission="a"))):
+    Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

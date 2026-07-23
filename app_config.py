@@ -125,6 +125,5 @@ def reload_config_authv2(req_permision: str = "a", security: str = Security(api_
         BEHIND_PROXY = True
     if missing_settings:
         print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.")
-        raise ValueError(f"Missing settings in config.yaml: {', '.join(missing_settings)}. Please check the configuration file.")
 
     return {"status": "200", "message": "Configuration reloaded successfully"}

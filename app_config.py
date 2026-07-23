@@ -63,7 +63,7 @@ def reload_config():
         missing_settings.append("BEHIND_PROXY")
         BEHIND_PROXY = True
     if missing_settings:
-        print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.")
+        print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.", flush=True)
 
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

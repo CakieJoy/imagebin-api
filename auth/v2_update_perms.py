@@ -1,7 +1,6 @@
 from fastapi import Security, HTTPException
 import sqlite3
 from fastapi.security import APIKeyHeader
-import bcrypt
 
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)

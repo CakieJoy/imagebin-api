@@ -13,22 +13,16 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
 
     conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()
-    # * Checks entry key avalible in db
-    cursor.execute("SELECT api_key FROM api_keys WHERE uid = ?", (uid_part,))
-    key_in_db = cursor.fetchone()
-    conn.close()
-    if key_in_db:
-        # * if key in the db
-        conn = sqlite3.connect("/app/data/api_keys.db")
-        cursor = conn.cursor()
-        cursor.execute("UPDATE api_keys SET permissions = ? WHERE uid = ?", (new_permissions, uid_part))
-        conn.commit()
+    cursor.execute("UPDATE api_keys SET permissions = ? WHERE uid = ?", (new_permissions, uid_part))
+    conn.commit()
+    if cursor.rowcount == 0:
+        # * if key not exist in the db
         conn.close()
+        raise HTTPException(status_code=404, detail="Entry key not found.")
+    else:
         return {
             "status": "200",
             "message": "Permission changed successfully"
         }
-    else:
-        # * if key not exist in the db
-        raise HTTPException(status_code="404", detail="Entry key not found.")
+    
 

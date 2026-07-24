@@ -30,5 +30,5 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
         }
     else:
         # * if key not exist in the db
-        raise HTTPException(status="404", detail="Entry key not found.")
+        raise HTTPException(status_code="404", detail="Entry key not found.")
 

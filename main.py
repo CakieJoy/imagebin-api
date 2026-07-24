@@ -137,7 +137,7 @@ async def reload_config_endpoint(request: Request,security: str = Depends(Check_
 @app.post("/api/v2/update-permissions")
 @limiter.limit("5/minute")
 async def update_perm_endpoint(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query(),new_permissions: str = Query(),):
-    Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
+    return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

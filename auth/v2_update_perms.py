@@ -15,8 +15,9 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
     cursor = conn.cursor()
     # * Checks entry key avalible in db
     cursor.execute("SELECT api_key FROM api_keys WHERE uid = ?", (uid_part,))
+    key_in_db = cursor.fetchone()
     conn.close()
-    if cursor.fetchone():
+    if key_in_db():
         # * if key in the db
         conn = sqlite3.connect("/app/data/api_keys.db")
         cursor = conn.cursor

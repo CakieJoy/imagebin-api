@@ -18,6 +18,8 @@ def Check_API_key_AuthV2(req_permission: str):
         byte_entry_key = key_part.encode('utf-8')
         cursor.execute("SELECT api_key FROM api_keys WHERE uid = ?", (uid_part,))
         in_db_key = cursor.fetchone()
+        if not in_db_key:
+            raise HTTPException(status_code=403, detail="API Key is invalid")
         cursor.execute("SELECT permissions FROM api_keys WHERE api_key = ?", (in_db_key[0],))
         permissions = cursor.fetchone()
         conn.close()

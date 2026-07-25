@@ -161,7 +161,7 @@ Creates an API key
 
 Creates an API key
 
-- **HTTP Method:** `POST`
+- **HTTP Method:** `DELETE`
     
 - **Endpoint:** `/api/v2/delete-api-key`
 

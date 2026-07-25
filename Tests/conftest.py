@@ -22,5 +22,5 @@ def img_id():
 def new_key():
     header = {"x-api-key": "1.very_secret_key_100_real"}
     response = client.post(f"/api/v2/create-api-key/?new_key=maybe-iam-a-api-key&new_key_permissions=rwa", headers=header)
-    new_key = response.json()[api_key]
+    new_key = response.json()["api_key"]
     yield new_key

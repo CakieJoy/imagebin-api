@@ -26,5 +26,5 @@ def test_delete_api_key_with_wrong_key(new_key):
 
 def test_delete_api_key_with_wrong_query(new_key):
     header = {"x-api-key": "1.very_secret_key_100_real"}
-    response = client.post(f"/api/v2/delete-api-key?entry_key=wrong-querysadsad", headers=header)
+    response = client.post(f"/api/v2/delete-api-key?entry_key=727.whenyouseeit", headers=header)
     assert response.status_code == 404

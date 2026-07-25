@@ -184,8 +184,45 @@ Creates an API key
 }
 ```
 
+#### Successful response example(`200 OK`)
+```json
+{
+    "status": "200",
+    "message": "New API Key created successfully",
+    "api_key": "6.notsecretkeylol"
+}
+```
 
-## 7. Storage Details
+### 7. Change API Key Permission
+
+Creates an API key
+
+- **HTTP Method:** `POST`
+    
+- **Endpoint:** `/api/v2/update-permissions`
+
+- **Required Permission:** `a`
+    
+- **Headers:**
+    
+    - `x-api-key`: `<api_key>`
+        
+- **Request Body:** 
+
+    - 'entry_key' query - Typing want to delete API key
+    - 'new_permissions' query - The new permissions
+
+
+#### Successful response example(`200 OK`)
+```json
+{
+    "status": "200",
+    "message": "Permission changed successfully"
+}
+```
+
+
+## 8. Storage Details
 
 - All uploaded files are stored unencrypted (**raw**) under the directory specified in `config.yaml`.
     
@@ -193,7 +230,7 @@ Creates an API key
 
 - API keys stores on the SQLite Database (api_keys.db)
 
-###  8. How to self-host?
+###  9. How to self-host?
 The project is available on [Docker Hub](https://hub.docker.com/r/cakiejoy/imagebin-api). You can pull the image by typing:
 
 ```bash

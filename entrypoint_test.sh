@@ -9,4 +9,4 @@ else
 fi
 
 echo "[INFO] Starting Unit Tests"
-exec python -m pytest
+exec gosu imagebin python -m pytest

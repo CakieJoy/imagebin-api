@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 echo "[INFO] Checking config file existing"
 if [ ! -f "/app/data/config.yaml" ]; then
@@ -21,13 +20,6 @@ fi
 echo "[INFO] Fixing permissions for imagebin user..."
 chown -R imagebin:imagebin /app
 
-echo "[INFO] Starting API"
-exec gosu imagebin uvicorn main:app \
-  --host 0.0.0.0 \
-  --port 8000 \
-  --workers 1 \
-  --loop uvloop \
-  --http httptools \
-  --no-access-log \
-  --limit-concurrency 1000 \
-  --timeout-keep-alive 10
+
+echo "[INFO] Starting Unit Tests"
+exec gosu imagebin python -m pytest

@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # * Change permissions
-RUN chmod +x ./entrypoint.sh ./entrypoint_test.sh
+RUN chmod +x ./entrypoint.sh ./Tests/entrypoint_test.sh
 
 
 # * API Port
@@ -25,4 +25,4 @@ EXPOSE 8000
 
 
 # * Entrypoint file
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./Tests/entrypoint_test.sh"]

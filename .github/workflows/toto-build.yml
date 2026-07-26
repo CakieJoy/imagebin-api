@@ -22,7 +22,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./toto.dockerfile
+        file: ./Tests/toto.dockerfile
         push: false
         load: true  
         tags: imagebin-api:toto

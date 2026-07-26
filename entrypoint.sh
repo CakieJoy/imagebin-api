@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "[INFO] Checking config file existing"
 if [ ! -f "/app/data/config.yaml" ]; then
@@ -17,8 +18,11 @@ else
   echo "[INFO] 404.html file found, skipping copy."
 fi
 
+echo "[INFO] Fixing permissions for imagebin user..."
+chown -R imagebin:imagebin /app
+
 echo "[INFO] Starting API"
-exec uvicorn main:app \
+exec gosu imagebin uvicorn main:app \
   --host 0.0.0.0 \
   --port 8000 \
   --workers 1 \

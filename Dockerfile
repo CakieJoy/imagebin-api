@@ -1,7 +1,11 @@
 FROM python:3.11-slim
 
-# * create project user (comment lined because not working correctly)
-#RUN adduser --disabled-password --gecos "" imagebinapi-user
+
+# install gosu
+RUN apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/*
+
+RUN adduser --disabled-password --gecos "" imagebin
+
 
 WORKDIR /app
 
@@ -13,17 +17,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # * Change permissions
-RUN chmod 755 ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh ./entrypoint_test.sh
 
-RUN chmod 755 ./entrypoint_test.sh
-
-RUN chmod -R 777 /app ./data
 
 # * API Port
 EXPOSE 8000
 
-# * Switch to project user (comment lined because not working correctly)
-#USER imagebinapi-user
 
 # * Entrypoint file
 ENTRYPOINT ["./entrypoint.sh"]

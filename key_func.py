@@ -3,7 +3,7 @@ from fastapi import Request
 from slowapi.util import get_remote_address
 
 def key_func(request: Request):
-    api_key = request.header.get("X-API-KEY")
+    api_key = request.headers.get("X-API-KEY")
     if api_key:
         return api_key
     else:

@@ -19,10 +19,10 @@ from get_images import get_image, get_image_authv2
 from upload import upload_image, upload_image_authv2
 from delete import delete_image
 from slowapi.errors import RateLimitExceeded
-from get_ip_address import get_ip_address
+from key_func import key_func
 import sqlite3
 
-limiter = Limiter(key_func=get_ip_address)
+limiter = Limiter(key_func=key_func)
 
 fastapi_kwargs = {}
 templates = Jinja2Templates(directory="/app/data/templates")

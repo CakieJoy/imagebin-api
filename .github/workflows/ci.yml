@@ -4,6 +4,26 @@ on:
   push:
     branches: [ main, master ]
 
+jobs:
+   test-process:
+     runs-on: ubuntu-latest
+
+     steps:
+     - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+     - name: Build Toto Test Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Tests/toto.dockerfile
+        push: false
+        load: true  
+        tags: imagebin-api:test-toto
+
+     - name: Run Unit Tests
+      run: |
+        docker run --rm imagebin-api:test-toto
 
 jobs:
   ci-process:
@@ -33,19 +53,6 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-
-    - name: Build Toto Test Image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./Tests/toto.dockerfile
-        push: false
-        load: true  
-        tags: imagebin-api:test-toto
-
-    - name: Run Unit Tests
-      run: |
-        docker run --rm imagebin-api:test-toto
 
     - name: Build and Push CI Image
       uses: docker/build-push-action@v5

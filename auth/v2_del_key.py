@@ -29,5 +29,4 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
     except HTTPException as http_exc:
         raise http_exc
     except Exception as e:
-        conn.close()
         raise HTTPException(status_code=500, detail="Error occurred while deleting API key")

@@ -11,7 +11,7 @@ def Create_API_key_AuthV2(new_key: str, new_key_permissions: str, req_permission
     try:
         conn = sqlite3.connect('/app/data/api_keys.db')
         cursor = conn.cursor()
-        hashed_key = hashlib.sha256(new_key.encode()).hexdigest()
+        hashed_key = hashlib.sha256(new_key.encode("utf-8")).hexdigest()
         cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, new_key_permissions))
         conn.commit()
         cursor.execute("SELECT uid FROM api_keys WHERE api_key = ?", (hashed_key,))

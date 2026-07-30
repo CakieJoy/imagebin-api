@@ -16,7 +16,7 @@ def Check_API_key_AuthV2(req_permission: str):
             raise HTTPException(status_code=403, detail="API Key is invalid")
         conn = sqlite3.connect('/app/data/api_keys.db')
         cursor = conn.cursor()
-        hashed_entry_key = hashlib.sha256(entry_key.encode).hexdigest()
+        hashed_entry_key = hashlib.sha256(entry_key.encode("utf-8")).hexdigest()
         cursor.execute("SELECT api_key FROM api_keys WHERE uid = ?", (uid_part,))
         in_db_key = cursor.fetchone()
         if not in_db_key:

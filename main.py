@@ -52,8 +52,8 @@ conn.close()
     
 if api_key_count == 0:
     # * Generate the default API key
-    new_api_key = "very_secret_key_100_real"
-    Create_API_key_AuthV2(new_api_key, "rwa")
+    response = Create_API_key_AuthV2("rwa")
+    new_api_key = response["api_key"]
     print(f"Generated default API key: 1.{new_api_key}", flush=True)
     print("Don't forget delete this API Key and generate a new one for security reasons.", flush=True)
 else:

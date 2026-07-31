@@ -61,8 +61,9 @@ if api_key_count == 0:
     cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, "rwa"))
     conn.commit()
     cursor.execute("SELECT uid FROM api_keys WHERE api_key = ?", (hashed_key,))
+    uid = cursor.fetchone()
     conn.close()
-    print(f"Generated default API key: 1.{new_api_key}", flush=True)
+    print(f"Generated default API key: {uid}.{new_api_key}", flush=True)
     print("Don't forget delete this API Key and generate a new one for security reasons.", flush=True)
 else:
     print("API key already exists in the database.")

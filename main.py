@@ -21,6 +21,8 @@ from delete import delete_image
 from slowapi.errors import RateLimitExceeded
 from key_func import key_func
 import sqlite3
+import hashlib
+
 
 limiter = Limiter(key_func=key_func)
 
@@ -52,8 +54,13 @@ conn.close()
     
 if api_key_count == 0:
     # * Generate the default API key
-    response = Create_API_key_AuthV2("rwa")
-    new_api_key = response["api_key"]
+    new_api_key = "very_secret_key_100_real"
+    conn = sqlite3.connect('/app/data/api_keys.db')
+    cursor = conn.cursor()
+    hashed_key = hashlib.sha256(new_api_key.encode("utf-8")).hexdigest()
+    cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, "rwa"))
+    conn.commit()
+    cursor.execute("SELECT uid FROM api_keys WHERE api_key = ?", (hashed_key,))
     print(f"Generated default API key: 1.{new_api_key}", flush=True)
     print("Don't forget delete this API Key and generate a new one for security reasons.", flush=True)
 else:

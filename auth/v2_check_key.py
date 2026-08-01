@@ -1,5 +1,6 @@
 import sqlite3
 import bcrypt
+import hashlib
 from fastapi import HTTPException, Security
 from fastapi.security import APIKeyHeader
 
@@ -15,7 +16,7 @@ def Check_API_key_AuthV2(req_permission: str):
             raise HTTPException(status_code=403, detail="API Key is invalid")
         conn = sqlite3.connect('/app/data/api_keys.db')
         cursor = conn.cursor()
-        byte_entry_key = key_part.encode('utf-8')
+        hashed_entry_key = hashlib.sha256(key_part.encode("utf-8")).hexdigest()
         cursor.execute("SELECT api_key FROM api_keys WHERE uid = ?", (uid_part,))
         in_db_key = cursor.fetchone()
         if not in_db_key:
@@ -27,7 +28,7 @@ def Check_API_key_AuthV2(req_permission: str):
             if req_permission not in permissions[0]:
                 raise HTTPException(status_code=403, detail="API Key does not have the required permission")
 
-        if bcrypt.checkpw(byte_entry_key, in_db_key[0]) is False:
+        if hashed_entry_key != in_db_key[0]:
             raise HTTPException(status_code=403, detail="API Key is invalid")
         else:
             return {

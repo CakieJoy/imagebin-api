@@ -21,6 +21,8 @@ from delete import delete_image
 from slowapi.errors import RateLimitExceeded
 from key_func import key_func
 import sqlite3
+import hashlib
+
 
 limiter = Limiter(key_func=key_func)
 
@@ -53,8 +55,15 @@ conn.close()
 if api_key_count == 0:
     # * Generate the default API key
     new_api_key = "very_secret_key_100_real"
-    Create_API_key_AuthV2(new_api_key, "rwa")
-    print(f"Generated default API key: 1.{new_api_key}", flush=True)
+    conn = sqlite3.connect('/app/data/api_keys.db')
+    cursor = conn.cursor()
+    hashed_key = hashlib.sha256(new_api_key.encode("utf-8")).hexdigest()
+    cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, "rwa"))
+    conn.commit()
+    cursor.execute("SELECT uid FROM api_keys WHERE api_key = ?", (hashed_key,))
+    uid = cursor.fetchone()
+    conn.close()
+    print(f"Generated default API key: {uid}.{new_api_key}", flush=True)
     print("Don't forget delete this API Key and generate a new one for security reasons.", flush=True)
 else:
     print("API key already exists in the database.")
@@ -121,8 +130,8 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 
 @app.post("/api/v2/create-api-key")
 @limiter.limit("5/minute")
-async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key: str = Query(), new_key_permissions: str = Query()):
-    return Create_API_key_AuthV2(new_key,new_key_permissions, req_permission="a", security=security)
+async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key_permissions: str = Query()):
+    return Create_API_key_AuthV2(new_key_permissions, req_permission="a", security=security)
 
 @app.delete("/api/v2/delete-api-key")
 @limiter.limit("5/minute")

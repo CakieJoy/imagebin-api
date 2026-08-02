@@ -15,4 +15,4 @@ def test_reload_config_without_api_key():
 def test_reload_config_with_invalid_api_key():
     header = {"x-api-key": "im_not_a_api_key_iam_a_teapot"}
     response = client.post("/api/v2/reload_config", headers=header)
-    assert response.status_code == 403
+    assert response.status_code == 401

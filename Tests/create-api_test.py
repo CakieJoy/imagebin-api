@@ -25,4 +25,4 @@ def test_create_api_key_without_api_key():
 def test_create_api_key_with_invalid_key():
     header = {"x-api-key": "1.adsadsadsadsadsad"}
     response = client.post(f"/api/v2/create-api-key/?new_key_permissions=rwa", headers=header)
-    assert response.status_code == 403
+    assert response.status_code == 401

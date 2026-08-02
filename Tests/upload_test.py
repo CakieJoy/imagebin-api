@@ -34,5 +34,5 @@ def test_upload_image_with_invalid_api_key():
 
     response = client.post("/api/v2/upload", headers=header, files=files)
 
-    assert response.status_code == 403
+    assert response.status_code == 401
 

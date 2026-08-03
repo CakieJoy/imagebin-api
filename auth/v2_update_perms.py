@@ -1,5 +1,6 @@
 from fastapi import Security, HTTPException
 import sqlite3
+import hashlib
 from fastapi.security import APIKeyHeader
 
 API_KEY_NAME = "X-API-KEY"
@@ -13,7 +14,8 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
 
     conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()
-    cursor.execute("UPDATE api_keys SET permissions = ? WHERE uid = ?", (new_permissions, uid_part))
+    hash_key_part = hashlib.sha256(key_part.encode("utf-8")).hexdigest()
+    cursor.execute("UPDATE api_keys SET permissions = ? WHERE uid = ? AND api_key = ?", (new_permissions, uid_part, hash_key_part))
     conn.commit()
     if cursor.rowcount == 0:
         # * if key not exist in the db

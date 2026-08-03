@@ -10,7 +10,7 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
     try:
         uid_part, key_part = entry_key.split('.', 1)
     except ValueError:
-        raise HTTPException(status_code=403, detail="API Key is invalid")
+        raise HTTPException(status_code=401, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'")
 
     conn = sqlite3.connect('/app/data/api_keys.db')
     cursor = conn.cursor()

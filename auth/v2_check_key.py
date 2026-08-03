@@ -13,7 +13,7 @@ def Check_API_key_AuthV2(req_permission: str):
         try:
             uid_part, key_part = entry_key.split('.', 1)
         except ValueError:
-            raise HTTPException(status_code=400, detail="API Key is wrongly formatted. It should be in the format '<uid>.key'")
+            raise HTTPException(status_code=400, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'")
         conn = sqlite3.connect('/app/data/api_keys.db')
         cursor = conn.cursor()
         hashed_entry_key = hashlib.sha256(key_part.encode("utf-8")).hexdigest()

@@ -11,68 +11,30 @@ SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
 DISABLE_DOCS = True
 BEHIND_PROXY = True
 
-def reload_config():
-    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT
-    
+def check_in_config(parent_key: str, child_key: str, default_data: str | bool | list[str]):
     with open("/app/data/config.yaml", "r") as config_file:
         data = yaml.safe_load(config_file)
 
-    settings = data.get("settings", {})
+    parent = data.get(parent_key, {})
 
-    debug = data.get("debug", {})
-
-    missing_settings = []
-
-    if "UPLOAD_FOLDER" in settings:
-        UPLOAD_FOLDER = settings.get("UPLOAD_FOLDER")
+    if child_key in parent:
+        return parent.get(child_key)
     else:
-        missing_settings.append("UPLOAD_FOLDER")
-        UPLOAD_FOLDER = "images"
+        print(f"Warning: Missing {child_key} in config.yaml under {parent_key}. Using default value: {default_data}", flush=True)
+        return default_data
 
-    if "DOMAIN" in settings:
-        DOMAIN = settings.get("DOMAIN")
-    else:
-        missing_settings.append("DOMAIN")
-        DOMAIN = "localhost:8000"
 
-    if "API_KEY" in settings:
-        RAW_API_KEY = settings.get("API_KEY")
-    else:
-        missing_settings.append("API_KEY")
-        RAW_API_KEY = "my_very_very_secret_api_key"
+def reload_config():
+    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT
 
-    if "URL_PREFIX" in settings:
-        IMAGE_URL_PREFIX = settings.get("URL_PREFIX")
-    else:
-        missing_settings.append("URL_PREFIX")
-        IMAGE_URL_PREFIX = "/images"
-
-    if "SUPPORTED_EXTENSIONS" in data:
-        SUPPORTED_EXTENSIONS = data["SUPPORTED_EXTENSIONS"]
-    else:
-        missing_settings.append("SUPPORTED_EXTENSIONS")
-        SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
-
-    if "DISABLE_DOCS" in settings:
-        DISABLE_DOCS = settings.get("DISABLE_DOCS")
-    else:
-        missing_settings.append("DISABLE_DOCS")
-        DISABLE_DOCS = True
-
-    if "BEHIND_PROXY" in settings:
-        BEHIND_PROXY = settings.get("BEHIND_PROXY")
-    else:
-        missing_settings.append("BEHIND_PROXY")
-        BEHIND_PROXY = True
-
-    if "DISABLE_RATE_LIMIT" in debug:
-        DISABLE_RATE_LIMIT = debug.get("DISABLE_RATE_LIMIT")
-    else:
-        missing_settings.append("DISABLE_RATE_LIMIT")
-        DISABLE_RATE_LIMIT = False
-
-    if missing_settings:
-        print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.", flush=True)
+    UPLOAD_FOLDER = check_in_config("settings", "UPLOAD_FOLDER", "images")
+    DOMAIN = check_in_config("settings", "DOMAIN", "localhost:8000")
+    RAW_API_KEY = check_in_config("settings", "API_KEY", "my_very_very_secret_api_key")
+    IMAGE_URL_PREFIX = check_in_config("settings", "URL_PREFIX", "/images")
+    SUPPORTED_EXTENSIONS = check_in_config("data", "SUPPORTED_EXTENSIONS", [".jpg", ".jpeg", ".png", ".gif"])
+    DISABLE_DOCS = check_in_config("settings", "DISABLE_DOCS", True)
+    BEHIND_PROXY = check_in_config("settings", "BEHIND_PROXY", True)
+    DISABLE_RATE_LIMIT = check_in_config("debug", "DISABLE_RATE_LIMIT", False)
 
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

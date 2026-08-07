@@ -3,13 +3,7 @@ from fastapi import Security
 from fastapi.security import APIKeyHeader
 import yaml
 
-UPLOAD_FOLDER = "images"
-DOMAIN = "localhost:8000"
-RAW_API_KEY = "my_very_very_secret_api_key"
-IMAGE_URL_PREFIX = "/images"
-SUPPORTED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
-DISABLE_DOCS = True
-BEHIND_PROXY = True
+
 
 def check_in_config(parent_key: str, child_key: str, default_data: str | bool | list[str]):
     with open("/app/data/config.yaml", "r") as config_file:

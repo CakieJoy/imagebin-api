@@ -12,12 +12,14 @@ DISABLE_DOCS = True
 BEHIND_PROXY = True
 
 def reload_config():
-    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY
+    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT
     
     with open("/app/data/config.yaml", "r") as config_file:
         data = yaml.safe_load(config_file)
 
     settings = data.get("settings", {})
+
+    debug = data.get("debug", {})
 
     missing_settings = []
 
@@ -62,6 +64,13 @@ def reload_config():
     else:
         missing_settings.append("BEHIND_PROXY")
         BEHIND_PROXY = True
+
+    if "DISABLE_RATE_LIMIT" in debug:
+        DISABLE_RATE_LIMIT = debug.get("DISABLE_RATE_LIMIT")
+    else:
+        missing_settings.append("DISABLE_RATE_LIMIT")
+        DISABLE_RATE_LIMIT = False
+
     if missing_settings:
         print(f"Warning: Missing settings in config.yaml: {', '.join(missing_settings)}. Using default values.", flush=True)
 

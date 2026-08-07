@@ -24,7 +24,9 @@ import sqlite3
 import hashlib
 
 
-limiter = Limiter(key_func=key_func)
+limiter = Limiter(
+    key_func=key_func,
+    enable=False if config.DISABLE_RATE_LIMIT else True)
 
 fastapi_kwargs = {}
 templates = Jinja2Templates(directory="/app/data/templates")

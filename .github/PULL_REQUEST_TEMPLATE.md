@@ -7,3 +7,5 @@ Summary your PR
 ## Changes
 
 Advanced changes with PR
+
+_(Merge method: default is Merge commit. If you want Squash merge please write this in here)_

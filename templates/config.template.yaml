@@ -15,3 +15,8 @@ supported_extensions:
   - ".png"
   - ".gif"
   - ".txt"
+
+
+instance:
+  name: "My Instance" # * Your instance name
+  description: "My Imagebin API Instance" # * Your instance description

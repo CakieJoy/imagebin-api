@@ -20,3 +20,4 @@ supported_extensions:
 instance:
   name: "My Instance" # * Your instance name
   description: "My Imagebin API Instance" # * Your instance description
+  email: "support@example.com"

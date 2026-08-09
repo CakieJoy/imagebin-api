@@ -1,6 +1,7 @@
-from fastapi import Security, HTTPException
-import sqlite3
 import hashlib
+import sqlite3
+
+from fastapi import HTTPException, Security
 from fastapi.security import APIKeyHeader
 
 API_KEY_NAME = "X-API-KEY"

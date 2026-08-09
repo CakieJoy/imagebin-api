@@ -1,28 +1,25 @@
+import hashlib
+import os
+import sqlite3
 from logging import config
-import secrets
+
+from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from authv1 import API_key_check
+from slowapi.errors import RateLimitExceeded
+
+import app_config as config
 from auth.v2_check_key import Check_API_key_AuthV2
 from auth.v2_create_key import Create_API_key_AuthV2
 from auth.v2_del_key import Delete_API_key_AuthV2
 from auth.v2_update_perms import Update_API_Permissions
+from authv1 import API_key_check
 from delete import delete_image, delete_image_authv2
-from fastapi import FastAPI, Query
-from fastapi import FastAPI, UploadFile, File, Request
-from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, UploadFile, File, Depends
-from fastapi.templating import Jinja2Templates
-import os
-import app_config as config
 from get_images import get_image, get_image_authv2
-from upload import upload_image, upload_image_authv2
-from delete import delete_image
-from slowapi.errors import RateLimitExceeded
 from key_func import key_func
-import sqlite3
-import hashlib
-
+from upload import upload_image, upload_image_authv2
 
 limiter = Limiter(
     key_func=key_func,

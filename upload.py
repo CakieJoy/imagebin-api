@@ -1,6 +1,7 @@
 import os
 import uuid
-from fastapi import UploadFile, File, Depends, HTTPException
+
+from fastapi import Depends, File, HTTPException, UploadFile
 
 import app_config as config
 from authv1 import API_key_check

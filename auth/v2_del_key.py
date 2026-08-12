@@ -10,7 +10,7 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
     try:
         if "." in entry_key:
             uid_part, key_part = entry_key.split('.', 1)
-            conn = sqlite3.connect('/app/data/api_keys.db')
+            conn = sqlite3.connect('/app/data/api_keys.db', timeout=5)
             cursor = conn.cursor()
             cursor.execute("DELETE FROM api_keys WHERE uid = ?", (uid_part,))
             if cursor.rowcount == 0:

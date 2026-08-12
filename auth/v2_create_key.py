@@ -12,7 +12,7 @@ def Create_API_key_AuthV2(new_key_permissions: str, req_permission: str = "a", s
     try:
         # If youre a good osu player you can see 727 in this secret
         new_key = secrets.token_hex(32)
-        conn = sqlite3.connect('/app/data/api_keys.db')
+        conn = sqlite3.connect('/app/data/api_keys.db', timeout=5)
         cursor = conn.cursor()
         hashed_key = hashlib.sha256(new_key.encode("utf-8")).hexdigest()
         cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, new_key_permissions))

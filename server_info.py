@@ -6,7 +6,7 @@ def server_info():
         "name": config.INSTANCE_NAME,
         "description": config.INSTANCE_DESCRIPTION,
         "email": config.INSTANCE_EMAIL,
-        "domain": config.INSTANCE_DOMAIN,
+        "domain": config.DOMAIN,
         "url_prefix": config.URL_PREFIX,
         "supported_extensions": config.SUPPORTED_EXTENSIONS,
     }

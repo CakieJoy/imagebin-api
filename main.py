@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import server_info
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -148,6 +149,10 @@ async def reload_config_endpoint_v2(request: Request,security: str = Depends(Che
 @limiter.limit("5/minute")
 async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query(),new_permissions: str = Query(),):
     return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
+
+@app.post("/api/info")
+async def get_info(request: Request):
+    return server_info()
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

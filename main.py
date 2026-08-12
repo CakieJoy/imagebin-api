@@ -152,7 +152,7 @@ async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check
 
 @app.get("/api/info")
 async def get_info(request: Request):
-    return server_info()
+    return server_info.server_info()
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

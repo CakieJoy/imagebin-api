@@ -1,6 +1,7 @@
 import hashlib
 import os
 import sqlite3
+from typing import Annotated
 
 from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
@@ -88,7 +89,7 @@ app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.U
 # * Upload Image endpoint with AuthV1
 @app.post("/v1/upload")
 @limiter.limit("5/minute")
-async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(API_key_check)):
+async def upload(request: Request, image: Annotated[UploadFile, File(...)], security: str = Depends(API_key_check)):
     return upload_image(image, security)
 
 # * Delete Image endpoint with AuthV1
@@ -111,7 +112,7 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 # * Upload Image endpoint with AuthV2
 @app.post("/api/v2/upload")
 @limiter.limit("5/minute")
-async def upload_v2(request: Request, image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
+async def upload_v2(request: Request, image: Annotated[UploadFile, File(...)], security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
     return upload_image_authv2(security, image, req_permission="w")
 
 # * Delete Image endpoint with AuthV2

@@ -9,6 +9,11 @@ RUN adduser --disabled-password --gecos "" imagebin
 
 WORKDIR /app
 
+ARG APP_VERSION
+
+ENV APP_VERSION=${APP_VERSION}
+
+
 # * copy module list and install modules
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

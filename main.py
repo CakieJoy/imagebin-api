@@ -35,6 +35,8 @@ else:
 
 # * Create a SQLite database
 conn = sqlite3.connect('/app/data/api_keys.db', timeout=5)
+# * Add WAL mode
+conn.execute("PRAGMA journal_mode = WAL;")
 cursor = conn.cursor()
 
 # * Create a table

@@ -13,7 +13,7 @@ def Update_API_Permissions(entry_key: str, new_permissions: str, req_permission:
     except ValueError as err:
         raise HTTPException(status_code=401, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'") from err
 
-    conn = sqlite3.connect('/app/data/api_keys.db')
+    conn = sqlite3.connect('/app/data/api_keys.db', timeout=5)
     cursor = conn.cursor()
     hash_key_part = hashlib.sha256(key_part.encode("utf-8")).hexdigest()
     cursor.execute("UPDATE api_keys SET permissions = ? WHERE uid = ? AND api_key = ?", (new_permissions, uid_part, hash_key_part))

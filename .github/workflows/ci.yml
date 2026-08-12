@@ -64,3 +64,15 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/imagebin-api:${{ steps.versioning.outputs.GENERATED_VERSION }}
+  ruff_check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ruff-action
+        uses: astral-sh/ruff-action@v4.1.0
+        with:
+          args: check
+          version: 0.16.0

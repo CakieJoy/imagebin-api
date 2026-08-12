@@ -26,6 +26,8 @@ jobs:
         push: false
         load: true  
         tags: imagebin-api:toto
+        build-args: |
+          APP_VERSION=toto
 
     - name: Run Unit Tests
       run: |
@@ -48,6 +50,8 @@ jobs:
         push: false
         load: true  
         tags: imagebin-api:prod
+        build-args: |
+            APP_VERSION=prod
 
   ruff_check:
     runs-on: ubuntu-latest

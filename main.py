@@ -1,7 +1,7 @@
 import hashlib
 import os
 import sqlite3
-from logging import config
+
 
 from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse

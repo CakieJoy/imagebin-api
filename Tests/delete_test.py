@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+
 from main import app
 
 client = TestClient(app)
@@ -28,5 +29,5 @@ def test_delete_image_with_invalid_api_key(img_id):
 
 def test_delete_image_with_invalid_img_id(img_id):
     header = {"x-api-key": "1.very_secret_key_100_real"}
-    response = client.delete(f"/api/v2/delete/?image_id=im-a-teapot-really-silly3", headers=header)
+    response = client.delete("/api/v2/delete/?image_id=im-a-teapot-really-silly3", headers=header)
     assert response.status_code == 404

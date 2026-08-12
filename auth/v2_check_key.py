@@ -1,9 +1,8 @@
-import sqlite3
-import bcrypt
 import hashlib
+import sqlite3
+
 from fastapi import HTTPException, Security
 from fastapi.security import APIKeyHeader
-
 
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
@@ -12,8 +11,8 @@ def Check_API_key_AuthV2(req_permission: str):
     def dependecy(entry_key: str = Security(api_key_header)):
         try:
             uid_part, key_part = entry_key.split('.', 1)
-        except ValueError:
-            raise HTTPException(status_code=400, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'")
+        except ValueError as err:
+            raise HTTPException(status_code=400, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'") from err
         conn = sqlite3.connect('/app/data/api_keys.db')
         cursor = conn.cursor()
         hashed_entry_key = hashlib.sha256(key_part.encode("utf-8")).hexdigest()

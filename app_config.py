@@ -1,8 +1,7 @@
 # config.py
+import yaml
 from fastapi import Security
 from fastapi.security import APIKeyHeader
-import yaml
-
 
 
 def check_in_config(parent_key: str, child_key: str, default_data: str | bool | list[str]):

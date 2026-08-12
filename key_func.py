@@ -1,7 +1,10 @@
-import app_config as config
+import hashlib
+
 from fastapi import Request
 from slowapi.util import get_remote_address
-import hashlib
+
+import app_config as config
+
 
 def key_func(request: Request):
     api_key = request.headers.get("X-API-KEY")

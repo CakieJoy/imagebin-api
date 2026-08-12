@@ -1,28 +1,25 @@
-from logging import config
-import secrets
+import hashlib
+import os
+import sqlite3
+from typing import Annotated
+
+from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from authv1 import API_key_check
+from slowapi.errors import RateLimitExceeded
+
+import app_config as config
 from auth.v2_check_key import Check_API_key_AuthV2
 from auth.v2_create_key import Create_API_key_AuthV2
 from auth.v2_del_key import Delete_API_key_AuthV2
 from auth.v2_update_perms import Update_API_Permissions
+from authv1 import API_key_check
 from delete import delete_image, delete_image_authv2
-from fastapi import FastAPI, Query
-from fastapi import FastAPI, UploadFile, File, Request
-from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, UploadFile, File, Depends
-from fastapi.templating import Jinja2Templates
-import os
-import app_config as config
 from get_images import get_image, get_image_authv2
-from upload import upload_image, upload_image_authv2
-from delete import delete_image
-from slowapi.errors import RateLimitExceeded
 from key_func import key_func
-import sqlite3
-import hashlib
-
+from upload import upload_image, upload_image_authv2
 
 limiter = Limiter(
     key_func=key_func,
@@ -92,7 +89,7 @@ app.mount(config.IMAGE_URL_PREFIX, StaticFiles(directory="/app/data/" + config.U
 # * Upload Image endpoint with AuthV1
 @app.post("/v1/upload")
 @limiter.limit("5/minute")
-async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(API_key_check)):
+async def upload(request: Request, image: Annotated[UploadFile, File(...)], security: str = Depends(API_key_check)):
     return upload_image(image, security)
 
 # * Delete Image endpoint with AuthV1
@@ -115,39 +112,39 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 # * Upload Image endpoint with AuthV2
 @app.post("/api/v2/upload")
 @limiter.limit("5/minute")
-async def upload(request: Request, image: UploadFile = File(...), security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
+async def upload_v2(request: Request, image: Annotated[UploadFile, File(...)], security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
     return upload_image_authv2(security, image, req_permission="w")
 
 # * Delete Image endpoint with AuthV2
 @app.delete("/api/v2/delete")
 @limiter.limit("5/minute")
-async def delete(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
+async def delete_v2(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
     return delete_image_authv2(image_id, security)
 
 # * Get Images endpoint with AuthV2
 @app.get("/api/v2/get-images")
 @limiter.limit("5/minute")
-async def get_images(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="r"))):
+async def get_images_authv2(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="r"))):
     return get_image_authv2(security, extension)
 
 @app.post("/api/v2/create-api-key")
 @limiter.limit("5/minute")
-async def create_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key_permissions: str = Query()):
+async def create_api_key_v2(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key_permissions: str = Query()):
     return Create_API_key_AuthV2(new_key_permissions, req_permission="a", security=security)
 
 @app.delete("/api/v2/delete-api-key")
 @limiter.limit("5/minute")
-async def delete_api_key(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query()):
+async def delete_api_key_v2(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query()):
     return Delete_API_key_AuthV2(entry_key,security)
 
 @app.post("/api/v2/reload_config")
 @limiter.limit("5/minute")
-async def reload_config_endpoint(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a"))):
+async def reload_config_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a"))):
     config.reload_config_authv2(security)
 
 @app.post("/api/v2/update-permissions")
 @limiter.limit("5/minute")
-async def update_perm_endpoint(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query(),new_permissions: str = Query(),):
+async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query(),new_permissions: str = Query(),):
     return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
 
 @app.exception_handler(404)

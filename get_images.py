@@ -1,9 +1,12 @@
 import glob
 import os
+
 from fastapi import Depends, HTTPException
+
 import app_config as config
-from authv1 import API_key_check
 from auth.v2_check_key import Check_API_key_AuthV2
+from authv1 import API_key_check
+
 
 def get_image(security: str = Depends(API_key_check), extension: str = ""):
     images_path = os.path.join("/app/data", config.UPLOAD_FOLDER)

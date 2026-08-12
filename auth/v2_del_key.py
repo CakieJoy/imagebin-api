@@ -1,8 +1,7 @@
-from fastapi import Security,HTTPException
 import sqlite3
-import hashlib
-from fastapi.security import APIKeyHeader
 
+from fastapi import HTTPException, Security
+from fastapi.security import APIKeyHeader
 
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
@@ -31,5 +30,5 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
             raise HTTPException(status_code=401, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'")
     except HTTPException as http_exc:
         raise http_exc
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Error occurred while deleting API key")
+    except Exception as err:
+        raise HTTPException(status_code=500, detail="Error occurred while deleting API key") from err

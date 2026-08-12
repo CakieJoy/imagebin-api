@@ -150,7 +150,7 @@ async def reload_config_endpoint_v2(request: Request,security: str = Depends(Che
 async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query(),new_permissions: str = Query(),):
     return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
 
-@app.post("/api/info")
+@app.get("/api/info")
 async def get_info(request: Request):
     return server_info()
 

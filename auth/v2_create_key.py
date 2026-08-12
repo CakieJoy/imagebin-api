@@ -27,4 +27,4 @@ def Create_API_key_AuthV2(new_key_permissions: str, req_permission: str = "a", s
             "api_key": f"{uid}.{new_key}"
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Database error: {e!s}") from e

@@ -2,7 +2,6 @@ import hashlib
 import os
 import sqlite3
 
-
 from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles

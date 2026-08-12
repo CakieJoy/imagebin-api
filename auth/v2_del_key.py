@@ -30,5 +30,5 @@ def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: s
             raise HTTPException(status_code=401, detail="API Key is wrongly formatted. It should be in the format '<uid>.<key>'")
     except HTTPException as http_exc:
         raise http_exc
-    except Exception:
-        raise HTTPException(status_code=500, detail="Error occurred while deleting API key")
+    except Exception as err:
+        raise HTTPException(status_code=500, detail="Error occurred while deleting API key") from err

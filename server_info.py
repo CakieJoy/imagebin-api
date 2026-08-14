@@ -1,5 +1,7 @@
-import app_config as config
 import os
+
+import app_config as config
+
 
 def get_app_version():
     return os.getenv("APP_VERSION", "dontknown")

@@ -24,7 +24,7 @@ def reload_config():
     DOMAIN = check_in_config("settings", "DOMAIN", "localhost:8000")
     RAW_API_KEY = check_in_config("settings", "API_KEY", "my_very_very_secret_api_key")
     IMAGE_URL_PREFIX = check_in_config("settings", "URL_PREFIX", "/images")
-    SUPPORTED_EXTENSIONS = check_in_config("data", "SUPPORTED_EXTENSIONS", [".jpg", ".jpeg", ".png", ".gif"])
+    SUPPORTED_EXTENSIONS = check_in_config("supported_extensions", None, [".jpg", ".jpeg", ".png", ".gif"])
     DISABLE_DOCS = check_in_config("settings", "DISABLE_DOCS", True)
     BEHIND_PROXY = check_in_config("settings", "BEHIND_PROXY", True)
     DISABLE_RATE_LIMIT = check_in_config("debug", "DISABLE_RATE_LIMIT", False)

@@ -8,6 +8,14 @@ def check_in_config(parent_key: str, child_key: str, default_data: str | bool | 
     with open("/app/data/config.yaml", "r") as config_file:
         data = yaml.safe_load(config_file)
 
+    if child_key is None:
+        if parent_key in data:
+            return data.get(parent_key)
+        else:
+            print(f"Warning: Missing {parent_key} in config.yaml. Using default value: {default_data}", flush=True)
+            return default_data
+    
+
     parent = data.get(parent_key, {})
 
     if child_key in parent:

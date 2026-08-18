@@ -24,9 +24,10 @@ def Check_API_key_AuthV2(req_permission: str):
         cursor.execute("SELECT permissions FROM api_keys WHERE api_key = ?", (in_db_key[0],))
         permissions = cursor.fetchone()
         conn.close()
-        if permissions is not None:
-            if req_permission not in permissions[0]:
-                raise HTTPException(status_code=403, detail="API Key does not have the required permission")
+        if permissions is "*":
+            if permissions is not None:
+                if req_permission not in permissions[0]:
+                    raise HTTPException(status_code=403, detail="API Key does not have the required permission")
 
         # * If key is wrong, return 401
         if hashed_entry_key != in_db_key[0]:

@@ -114,40 +114,40 @@ async def get_images(request: Request, extension: str = Query(default = ""), sec
 # * Upload Image endpoint with AuthV2
 @app.post("/api/v2/upload")
 @limiter.limit("5/minute")
-async def upload_v2(request: Request, image: Annotated[UploadFile, File(...)], security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
-    return upload_image_authv2(security, image, req_permission="w")
+async def upload_v2(request: Request, image: Annotated[UploadFile, File(...)], security: str = Depends(Check_API_key_AuthV2(req_permission="upload"))):
+    return upload_image_authv2(security, image, req_permission="upload")
 
 # * Delete Image endpoint with AuthV2
 @app.delete("/api/v2/delete")
 @limiter.limit("5/minute")
-async def delete_v2(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2(req_permission="w"))):
+async def delete_v2(request: Request, image_id: str, security: str = Depends(Check_API_key_AuthV2(req_permission="delete"))):
     return delete_image_authv2(image_id, security)
 
 # * Get Images endpoint with AuthV2
 @app.get("/api/v2/get-images")
 @limiter.limit("5/minute")
-async def get_images_authv2(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="r"))):
+async def get_images_authv2(request: Request, extension: str = Query(default = ""), security: str = Depends(Check_API_key_AuthV2(req_permission="list"))):
     return get_image_authv2(security, extension)
 
 @app.post("/api/v2/create-api-key")
 @limiter.limit("5/minute")
-async def create_api_key_v2(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), new_key_permissions: str = Query()):
-    return Create_API_key_AuthV2(new_key_permissions, req_permission="a", security=security)
+async def create_api_key_v2(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="create-key")), new_key_permissions: str = Query()):
+    return Create_API_key_AuthV2(new_key_permissions, req_permission="create-key", security=security)
 
 @app.delete("/api/v2/delete-api-key")
 @limiter.limit("5/minute")
-async def delete_api_key_v2(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query()):
+async def delete_api_key_v2(request: Request, security: str = Depends(Check_API_key_AuthV2(req_permission="delete-key")), entry_key: str = Query()):
     return Delete_API_key_AuthV2(entry_key,security)
 
 @app.post("/api/v2/reload_config")
 @limiter.limit("5/minute")
-async def reload_config_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a"))):
+async def reload_config_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="reload-config"))):
     config.reload_config_authv2(security)
 
 @app.post("/api/v2/update-permissions")
 @limiter.limit("5/minute")
-async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="a")), entry_key: str = Query(),new_permissions: str = Query(),):
-    return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="a")
+async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="update-permissions")), entry_key: str = Query(),new_permissions: str = Query(),):
+    return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="update-permissions")
 
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):

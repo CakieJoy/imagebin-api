@@ -44,5 +44,5 @@ reload_config()
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
 
-def reload_config_authv2(req_permision: str = "a", security: str = Security(api_key_header)):
+def reload_config_authv2(req_permision: str = "reload-config", security: str = Security(api_key_header)):
     reload_config()

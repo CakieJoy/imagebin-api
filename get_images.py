@@ -24,7 +24,7 @@ def get_image(security: str = Depends(API_key_check), extension: str = ""):
             return {"status": "200", "images-list": filtered_images, "message": "The APIv1 is deprecated, please us the APIv2 endpoints. APIv1 will be removed in the future."}
         
 
-def get_image_authv2(security: str = Depends(Check_API_key_AuthV2(req_permission="r")), extension: str = ""):
+def get_image_authv2(security: str = Depends(Check_API_key_AuthV2(req_permission="list")), extension: str = ""):
     images_path = os.path.join("/app/data", config.UPLOAD_FOLDER)
     if extension == "":
         all_images = os.listdir(images_path)

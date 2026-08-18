@@ -8,7 +8,7 @@ from fastapi.security import APIKeyHeader
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
 
-def Create_API_key_AuthV2(new_key_permissions: str, req_permission: str = "a", security: str = Security(api_key_header)):
+def Create_API_key_AuthV2(new_key_permissions: str, req_permission: str = "create-key", security: str = Security(api_key_header)):
     try:
         # If youre a good osu player you can see 727 in this secret
         new_key = secrets.token_hex(32)

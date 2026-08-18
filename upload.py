@@ -31,7 +31,7 @@ def upload_image(image: Annotated[UploadFile, File(...)], security: str = Depend
         raise HTTPException(status_code=400, detail={"message": "Unsupported file type", "supported_extensions": config.SUPPORTED_EXTENSIONS})
     
 
-def upload_image_authv2(security: str, image: Annotated[UploadFile, File(...)], req_permission: str = "w"):
+def upload_image_authv2(security: str, image: Annotated[UploadFile, File(...)], req_permission: str = "upload"):
     image_extension = os.path.splitext(image.filename)[1]
     
     if image_extension in config.SUPPORTED_EXTENSIONS:

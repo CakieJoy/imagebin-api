@@ -59,7 +59,7 @@ if api_key_count == 0:
     conn = sqlite3.connect('/app/data/api_keys.db', timeout=5)
     cursor = conn.cursor()
     hashed_key = hashlib.sha256(new_api_key.encode("utf-8")).hexdigest()
-    cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, "rwa"))
+    cursor.execute("INSERT INTO api_keys (api_key, permissions) VALUES (?, ?)", (hashed_key, "*"))
     conn.commit()
     cursor.execute("SELECT uid FROM api_keys WHERE api_key = ?", (hashed_key,))
     uid = cursor.fetchone()

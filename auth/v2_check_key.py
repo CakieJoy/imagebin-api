@@ -25,7 +25,7 @@ def Check_API_key_AuthV2(req_permission: str):
         permissions = cursor.fetchone()
         conn.close()
         if permissions is not None:
-            if permissions == "*":
+            if permissions[0] == "*":
                 pass
             else:
                 if req_permission not in permissions[0]:

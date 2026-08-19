@@ -25,7 +25,7 @@ python-multipart==0.0.32
 PyYAML==6.0.3
 slowapi==0.1.10
 starlette==1.2.0
-typing-inspection==0.4.2
+typing-inspection==0.4.4
 typing_extensions==4.16.0
 uuid==1.30
 uvicorn==0.52.1

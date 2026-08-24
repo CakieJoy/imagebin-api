@@ -6,7 +6,7 @@ from fastapi.security import APIKeyHeader
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
 
-def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "a", security: str = Security(api_key_header)):
+def Delete_API_key_AuthV2(entry_key: str, req_permission: str = "delete-key", security: str = Security(api_key_header)):
     try:
         if "." in entry_key:
             uid_part, key_part = entry_key.split('.', 1)

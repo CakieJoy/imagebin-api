@@ -35,9 +35,14 @@ The entire operational workflow of the API is managed via the `config.yaml` file
 Used to upload a new file to the system.
 
 * **HTTP Method:** `POST`
+
 * **Endpoint:** `/api/v2/upload`
+
+- **Required Permission:** `upload`
+
 * **Headers:**
     * `x-api-key`: `<api_key>`
+
 * **Request Body (multipart/form-data):**
     * `image` (File): The local file to be uploaded.
 
@@ -58,6 +63,8 @@ Permanently deletes a file hosted on the server from both the system and the dis
 - **HTTP Method:** `DELETE`
     
 - **Endpoint:** `/api/v2/delete`
+
+- **Required Permission:** `delete`
     
 - **Headers:**
     
@@ -82,6 +89,8 @@ Reloads the changes made to `config.yaml` into the system without shutting down 
 - **HTTP Method:** `POST`
     
 - **Endpoint:** `/api/v2/reload-config`
+
+- **Required Permission:** `reload-config`
     
 - **Headers:**
     
@@ -104,6 +113,8 @@ List uploaded images (/data/${UPLOAD_FOLDER})
 - **HTTP Method:** `GET`
     
 - **Endpoint:** `/api/v2/get-images`
+
+- **Required Permission:** `list`
     
 - **Headers:**
     
@@ -131,7 +142,7 @@ Creates an API key
     
 - **Endpoint:** `/api/v2/create-api-key`
 
-- **Required Permission:** `a`
+- **Required Permission:** `create-key`
     
 - **Headers:**
     
@@ -169,7 +180,7 @@ Creates an API key
     
 - **Endpoint:** `/api/v2/delete-api-key`
 
-- **Required Permission:** `a`
+- **Required Permission:** `delete-key`
     
 - **Headers:**
     
@@ -205,7 +216,7 @@ Creates an API key
     
 - **Endpoint:** `/api/v2/update-permissions`
 
-- **Required Permission:** `a`
+- **Required Permission:** `update-permissions`
     
 - **Headers:**
     

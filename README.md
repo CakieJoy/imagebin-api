@@ -144,9 +144,13 @@ Creates an API key
 
 - **Permissions:**
 
-    - 'r' It's read permission
-    - 'w' It's write permission
-    - 'a' It's admin permission
+    - 'list' It's /api/v2/get-images permission
+    - 'upload' It's /api/v2/upload permission
+    - 'delete' It's /api/v2/delete permission
+    - 'create-key' It's /api/v2/create-api-key permission
+    - 'delete-key' It's /api/v2/delete-api-key permission
+    - 'reload-config' It's /api/v2/reload_config permission
+    - 'update-permissions' It's /api/v2/update-permissions permission
 
 #### Successful response example(`200 OK`)
 ```json

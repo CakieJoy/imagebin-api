@@ -20,6 +20,7 @@ from delete import delete_image, delete_image_authv2
 from get_images import get_image, get_image_authv2
 from key_func import key_func
 from upload import upload_image, upload_image_authv2
+from uptime import create_start_time
 
 limiter = Limiter(
     key_func=key_func,
@@ -74,6 +75,10 @@ app = FastAPI(**fastapi_kwargs)
 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# * Create a start time for uptime
+create_start_time()
+
 
 @app.post("/v1/reload_config")
 @limiter.limit("5/minute")

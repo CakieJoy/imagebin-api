@@ -1,5 +1,6 @@
 import time
 
+
 def create_start_time():
     global start_time
     start_time = int(time.time() * 1000)  # * Store start time in ms

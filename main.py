@@ -149,6 +149,13 @@ async def reload_config_endpoint_v2(request: Request,security: str = Depends(Che
 async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check_API_key_AuthV2(req_permission="update-permissions")), entry_key: str = Query(),new_permissions: str = Query(),):
     return Update_API_Permissions(entry_key, new_permissions, security=security, req_permission="update-permissions")
 
+
+@app.get("/api/health")
+@limiter.limit("5/minute")
+async def health_check(request: Request):
+    pass
+
+
 @app.exception_handler(404)
 async def not_found(request, exc: Exception):
     accept_header = request.headers.get("accept", "")

@@ -7,6 +7,7 @@ from fastapi import Depends, FastAPI, File, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import health
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -21,7 +22,6 @@ from get_images import get_image, get_image_authv2
 from key_func import key_func
 from upload import upload_image, upload_image_authv2
 from uptime import create_start_time
-from health import health_check
 
 limiter = Limiter(
     key_func=key_func,
@@ -159,7 +159,7 @@ async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check
 @app.get("/api/health")
 @limiter.limit("5/minute")
 async def health_check(request: Request):
-    return health_check()
+    return health.health_check()
 
 
 @app.exception_handler(404)

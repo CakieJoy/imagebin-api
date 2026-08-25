@@ -21,6 +21,7 @@ from get_images import get_image, get_image_authv2
 from key_func import key_func
 from upload import upload_image, upload_image_authv2
 from uptime import create_start_time
+from health import health_check
 
 limiter = Limiter(
     key_func=key_func,
@@ -158,7 +159,7 @@ async def update_perm_endpoint_v2(request: Request,security: str = Depends(Check
 @app.get("/api/health")
 @limiter.limit("5/minute")
 async def health_check(request: Request):
-    pass
+    return health_check()
 
 
 @app.exception_handler(404)

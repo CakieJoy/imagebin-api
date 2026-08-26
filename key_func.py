@@ -9,7 +9,10 @@ import app_config as config
 def key_func(request: Request):
     api_key = request.headers.get("X-API-KEY")
     if api_key:
-        return hashlib.sha256(api_key.encode('utf-8')).hexdigest()
+        if api_key in config.RATE_LIMIT_API_WL:
+            return None
+        else:
+            return hashlib.sha256(api_key.encode('utf-8')).hexdigest()
     else:
         if config.BEHIND_PROXY:
             cf_connecting_ip = request.headers.get("CF-Connecting-IP")

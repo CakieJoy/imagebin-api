@@ -26,7 +26,7 @@ def check_in_config(parent_key: str, child_key: str, default_data: str | bool | 
 
 
 def reload_config():
-    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT
+    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT, RATE_LIMIT_IP_WL, RATE_LIMIT_API_WL
 
     UPLOAD_FOLDER = check_in_config("settings", "UPLOAD_FOLDER", "images")
     DOMAIN = check_in_config("settings", "DOMAIN", "localhost:8000")
@@ -36,6 +36,9 @@ def reload_config():
     DISABLE_DOCS = check_in_config("settings", "DISABLE_DOCS", True)
     BEHIND_PROXY = check_in_config("settings", "BEHIND_PROXY", True)
     DISABLE_RATE_LIMIT = check_in_config("debug", "DISABLE_RATE_LIMIT", False)
+
+    RATE_LIMIT_IP_WL = check_in_config("rate_limit_ip_whitelist", None, ["127.0.0.1"])
+    RATE_LIMIT_API_WL = check_in_config("rate_limit_api_whitelist", None, ["1.my_very_very_secret_api_key"])
 
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

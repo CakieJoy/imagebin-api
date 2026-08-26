@@ -20,4 +20,4 @@ rate_limit_ip_whitelist:
   - "127.0.0.1"
 
 rate_limit_api_whitelist:
-  - "my_very_very_secret_api_key"
+  - "1.my_very_very_secret_api_key"

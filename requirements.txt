@@ -28,6 +28,6 @@ starlette==1.2.0
 typing-inspection==0.4.4
 typing_extensions==4.16.0
 uuid==1.30
-uvicorn==0.52.3
+uvicorn==0.52.4
 uvloop==0.22.1
 wrapt==2.3.0

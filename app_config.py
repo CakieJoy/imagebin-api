@@ -37,8 +37,8 @@ def reload_config():
     BEHIND_PROXY = check_in_config("settings", "BEHIND_PROXY", True)
     DISABLE_RATE_LIMIT = check_in_config("debug", "DISABLE_RATE_LIMIT", False)
 
-    RATE_LIMIT_IP_WL = check_in_config("rate_limit_ip_whitelist", None, ["127.0.0.1"])
-    RATE_LIMIT_API_WL = check_in_config("rate_limit_api_whitelist", None, ["1.my_very_very_secret_api_key"])
+    RATE_LIMIT_IP_WL = check_in_config("rate_limit_whitelist", "ip", ["127.0.0.1"])
+    RATE_LIMIT_API_WL = check_in_config("rate_limit_whitelist", "api", ["1.my_very_very_secret_api_key"])
 
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

@@ -30,4 +30,4 @@ typing_extensions==4.16.0
 uuid==1.30
 uvicorn==0.52.3
 uvloop==0.22.1
-wrapt==2.3.0
+wrapt==2.4.0

@@ -26,7 +26,7 @@ def check_in_config(parent_key: str, child_key: str, default_data: str | bool | 
 
 
 def reload_config():
-    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT
+    global UPLOAD_FOLDER, DOMAIN, RAW_API_KEY, IMAGE_URL_PREFIX, SUPPORTED_EXTENSIONS, DISABLE_DOCS, BEHIND_PROXY, DISABLE_RATE_LIMIT, INSTANCE_NAME, INSTANCE_DESCRIPTION, INSTANCE_EMAIL, ENVIRONMENT
 
     UPLOAD_FOLDER = check_in_config("settings", "UPLOAD_FOLDER", "images")
     DOMAIN = check_in_config("settings", "DOMAIN", "localhost:8000")
@@ -36,6 +36,12 @@ def reload_config():
     DISABLE_DOCS = check_in_config("settings", "DISABLE_DOCS", True)
     BEHIND_PROXY = check_in_config("settings", "BEHIND_PROXY", True)
     DISABLE_RATE_LIMIT = check_in_config("debug", "DISABLE_RATE_LIMIT", False)
+    ENVIRONMENT = check_in_config("settings", "ENVIRONMENT", "dev")
+
+    # * Info settings
+    INSTANCE_NAME = check_in_config("instance", "name", "My Instance")
+    INSTANCE_DESCRIPTION = check_in_config("instance", "description", "My Imagebin API Instance")
+    INSTANCE_EMAIL = check_in_config("instance", "email", "support@example.com")
 
     return {"status": "200", "message": "Configuration reloaded successfully"}
 

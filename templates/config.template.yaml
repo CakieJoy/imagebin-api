@@ -15,3 +15,10 @@ supported_extensions:
   - ".png"
   - ".gif"
   - ".txt"
+
+
+rate_limit_whitelist:
+  ip:
+    - "127.0.0.1"
+  api:
+    - "1.my_very_very_secret_api_key"

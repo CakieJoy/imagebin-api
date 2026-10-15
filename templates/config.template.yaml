@@ -5,6 +5,7 @@ settings:
   UPLOAD_FOLDER: "images" # * Folder name for uploaded images.
   DISABLE_DOCS: True # * If you want to disable /docs and /redoc set this to True (config reload is not supported)
   BEHIND_PROXY: True # * If you are using a reverse proxy like nginx or cloudflare set this to True
+  ENVIRONMENT: "prod" # * Set this to "prod", "staging" or "dev" (shown /api/info endpoint)
 
 debug:
   DISABLE_RATE_LIMIT: False # * If you want to disable rate limit set this to True
@@ -15,3 +16,9 @@ supported_extensions:
   - ".png"
   - ".gif"
   - ".txt"
+
+
+instance:
+  name: "My Instance" # * Your instance name
+  description: "My Imagebin API Instance" # * Your instance description
+  email: "support@example.com" # * Your support email address
